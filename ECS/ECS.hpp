@@ -9,6 +9,7 @@
 
 class Component;
 class Entity;
+class Manager;
 
 using ComponentID = std::size_t;
 using Group = std::size_t;
@@ -48,8 +49,17 @@ class Component
 
 class Entity 
 {
-    public:
+    private:
+        Manager& manager;
 
+        bool active = true;
+        std::vector<std::unique_ptr<Component>> components;
+
+        ComponentArray componentArray;
+        ComponentBitSet componentBitSet;
+        GroupBitSet groupBitset;
+
+    public:
         Entity(Manager& mManager) : manager(mManager) {}
 
         void update()
@@ -109,16 +119,6 @@ class Entity
             auto ptr(componentArray[getComponentTypeID<T>()]);
             return *static_cast<T*>(ptr);
         }
-
-    private:
-        Manager& manager;
-
-        bool active = true;
-        std::vector<std::unique_ptr<Component>> components;
-
-        ComponentArray componentArray;
-        ComponentBitSet componentBitSet;
-        GroupBitSet groupBitset;
 
 };
 
