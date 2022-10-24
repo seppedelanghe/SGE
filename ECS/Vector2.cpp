@@ -1,4 +1,7 @@
 #include "Vector2.hpp"
+#include <math.h>
+
+#define PI 3.14159265f
 
 Vector2::Vector2()
 {
@@ -11,6 +14,23 @@ Vector2::Vector2(float x, float y)
     this->x = x;
     this->y = y;
 }
+
+
+
+float Vector2::angle(bool degrees = false)
+{
+    if (degrees) {
+        return atan2(this->x, this->y) * 180.0f / PI;
+    }
+    return atan2(this->x, this->y);
+}
+
+float Vector2::length()
+{
+    return sqrt(this->x * this->x + this->y * this->y);
+}
+
+
 
 Vector2& Vector2::Add(const Vector2& vec)
 {

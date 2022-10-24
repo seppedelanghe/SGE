@@ -11,6 +11,9 @@ class Vector2
         Vector2();
         Vector2(float x, float y);
 
+        float angle(bool degrees);
+        float length();
+
         Vector2& Add(const Vector2& vec);
         Vector2& Sub(const Vector2& vec);
         Vector2& Mul(const Vector2& vec);
