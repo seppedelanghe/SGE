@@ -14,12 +14,21 @@ class TransformComponent : public Component
         Vector2 position;
         Vector2 velocity;
 
+        int height = 32;
+        int width = 32;
+        int scale = 2;
+
         int speed = 3;
 
         TransformComponent()
         {
-            position.x = 0.0f;
-            position.y = 0.0f;
+            position.Zero();
+        }
+
+        TransformComponent(int scl)
+        {
+            position.Zero();
+            scale = scl;
         }
 
         TransformComponent(float x, float y) 
@@ -28,10 +37,18 @@ class TransformComponent : public Component
             position.y = y;
         }
 
+        TransformComponent(float x, float y, int w, int h, int scl)
+        {
+            position.x = x;
+            position.y = y;
+            height = h;
+            width = w;
+            scale = scl;
+        }
+
         void init() override
         {
-            velocity.x = 0;
-            velocity.y = 0;
+            velocity.Zero();
         }
 
         void update() override

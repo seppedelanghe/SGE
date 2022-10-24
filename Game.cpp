@@ -3,14 +3,19 @@
 #include "Map.hpp"
 #include "ECS/Components.hpp"
 #include "ECS/Vector2.hpp"
- 
+#include "ECS/Collision.hpp"
+
 Map* map = nullptr;
 Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
+std::vector<ColliderComponent*> Game::colliders;
+
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
+
 
 Game::Game()
 {}
@@ -46,9 +51,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     map = new Map();
 
-    player.addComponent<TransformComponent>(0, 200);
+    Map::LoadMap("assets/map32x16.txt", 32, 16);
+
+    player.addComponent<TransformComponent>(2);
     player.addComponent<SpriteComponent>("assets/player.png");
     player.addComponent<KeyboardController>();
+    player.addComponent<ColliderComponent>("player");
+
+    wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+    wall.addComponent<SpriteComponent>("assets/dirt.png");
+    wall.addComponent<ColliderComponent>("wall");
 }
 
 void Game::handleEvents()
@@ -71,10 +83,15 @@ void Game::update()
     manager.refresh();
     manager.update();
 
-    // player.getComponent<TransformComponent>().position.Add(Vector2(5, 0));
-    if (player.getComponent<TransformComponent>().position.x > 100)
+    for (auto cc : colliders)
     {
-        player.getComponent<SpriteComponent>().setText("assets/tile001.png");
+        if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
+        {
+            // reverse direction
+            player.getComponent<TransformComponent>().velocity * -1;
+            
+            std::cout << "Wall hit" << std::endl;
+        }
     }
 }
 
@@ -84,7 +101,6 @@ void Game::render()
     SDL_RenderClear(renderer);
     
     // Add stuff to render
-    map->DrawMap();
     manager.draw();
 
     // Present render
@@ -100,3 +116,10 @@ void Game::clean()
     std::cout << "Game cleaned..." << std::endl;
 }
 
+
+
+void Game::AddTile(int id, int x, int y)
+{
+    auto& tile(manager.addEntity());
+    tile.addComponent<TileComponent>(x, y, 32, 32, id);
+}

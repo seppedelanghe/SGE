@@ -57,6 +57,24 @@ Vector2& Vector2::operator-=(const Vector2& vec) { return this->Sub(vec); }
 Vector2& Vector2::operator*=(const Vector2& vec) { return this->Mul(vec); }
 Vector2& Vector2::operator/=(const Vector2& vec) { return this->Div(vec); }
 
+
+Vector2& Vector2::operator*(const int& i)
+{
+    this->x *= i;
+    this->y *= i;
+
+    return *this;
+}
+
+Vector2& Vector2::Zero()
+{
+    this->x = 0;
+    this->y = 0;
+
+    return *this;
+}
+
+// Nice printing
 std::ostream& operator<<(std::ostream& stream, const Vector2& vec)
 {
     stream << "(" << vec.x << "," << vec.y << ")";

@@ -20,6 +20,11 @@ class KeyboardController : public Component
             {
                 switch (Game::event.key.keysym.sym)
                 {
+                
+                case SDLK_z: // w or z => azerty
+                    transform->velocity.y = -1;
+                    break;
+                
                 case SDLK_w: // w or z => azerty
                     transform->velocity.y = -1;
                     break;

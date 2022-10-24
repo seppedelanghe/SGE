@@ -1,1 +1,1 @@
-g++ main.cpp Game.cpp TextureManager.cpp GameObject.cpp Map.cpp ECS/Vector2.cpp -o main -lSDL2 -lSDL2_image
+g++ -o main -I ./ECS *.cpp ECS/*cpp -lSDL2 -lSDL2_image
