@@ -60,8 +60,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     Map::LoadMap("assets/map32x16.txt", 32, 16);
 
-    player.addComponent<TransformComponent>(2);
-    player.addComponent<SpriteComponent>("assets/player.png");
+    player.addComponent<TransformComponent>(0, 0, 24, 24, 2);
+    player.addComponent<SpriteComponent>("assets/animation.png", 2, 200);
+    player.getComponent<SpriteComponent>().addAnimation("Walk", 1, 4, 100);
+
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(groupPlayers);
