@@ -5,6 +5,9 @@
 #include "ECS/Vector2.hpp"
 #include "ECS/Collision.hpp"
 
+const char* MAPFILE = "assets/map32x16.txt";
+const char* TILESETFILE = "assets/tileset.png";
+
 Map* map = nullptr;
 Manager manager;
 
@@ -13,8 +16,8 @@ SDL_Event Game::event;
 
 std::vector<ColliderComponent*> Game::colliders;
 
-auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+
+bool Game::isRunning = false;
 
 enum groupLabels : std::size_t
 {
@@ -23,6 +26,13 @@ enum groupLabels : std::size_t
     groupEnemies,
     groupColliders
 };
+
+
+auto& player(manager.addEntity());
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
+
 
 Game::Game()
 {}
@@ -58,22 +68,17 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     map = new Map();
 
-    Map::LoadMap("assets/map32x16.txt", 32, 16);
+    Map::LoadMap(MAPFILE, 32, 16);
 
     try
     {
-        player.addComponent<TransformComponent>(0, 0, 24, 24, 2);
-        player.getComponent<SpriteComponent>().addAnimation("Walk", 1, 4, 100); // intentional fail
+        player.addComponent<TransformComponent>(320, 320, 24, 24, 4);
         player.addComponent<SpriteComponent>("assets/animation.png", 2, 200);
+        player.getComponent<SpriteComponent>().addAnimation("Walk", 1, 4, 100);
 
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
         player.addGroup(groupPlayers);
-
-        wall.addComponent<TransformComponent>(300.0f, 300.0f, 20, 300, 1);
-        wall.addComponent<SpriteComponent>("assets/dirt.png");
-        wall.addComponent<ColliderComponent>("wall");
-        wall.addGroup(groupMap);
     }
     catch(const char* msg)
     {
@@ -101,20 +106,16 @@ void Game::update()
     manager.refresh();
     manager.update();
 
-    for (auto cc : colliders)
+    Vector2 pVel = player.getComponent<TransformComponent>().velocity;
+    int pSpeed = player.getComponent<TransformComponent>().speed;
+
+    for (auto t : tiles)
     {
-        if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
-        {
-            // reverse direction
-            // player.getComponent<TransformComponent>().velocity * -1;
-        }
+        t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
+        t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
     }
 }
 
-
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
 
 
 void Game::render()
@@ -153,9 +154,9 @@ void Game::clean()
 
 
 
-void Game::AddTile(int id, int x, int y)
+void Game::AddTile(int srcX, int srcY, int xpos, int ypos)
 {
     auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
+    tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, TILESETFILE);
     tile.addGroup(groupMap);
 }

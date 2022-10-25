@@ -11,7 +11,7 @@ int main(int argc, const char * argv[]) {
     int frameTime;
 
     game = new Game();
-    game->init("Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+    game->init("Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 32 * 32, 32 * 32, false);
 
     while (game->running()) {
 
@@ -20,7 +20,6 @@ int main(int argc, const char * argv[]) {
         game->handleEvents();
         game->update();
         game->render();
-
 
         frameTime = SDL_GetTicks() - frameStart; // Time taken to handle, update and render
 
