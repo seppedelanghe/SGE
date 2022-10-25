@@ -62,9 +62,6 @@ class SpriteComponent : public Component
             srcRect.x = srcRect.y = 0;
             srcRect.w = transform->width;
             srcRect.h = transform->height;
-
-            destRect.w = transform->width * transform->scale;
-            destRect.h = transform->height * transform->scale;
         }
 
         void update() override
@@ -76,8 +73,13 @@ class SpriteComponent : public Component
 
             srcRect.y = animIndex * transform->height;
 
-            destRect.x = static_cast<int>(transform->position.x);
-            destRect.y = static_cast<int>(transform->position.y);
+            destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
+            destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
+            
+            destRect.w = transform->width * transform->scale;
+            destRect.h = transform->height * transform->scale;
+
+
         }
 
         void draw() override

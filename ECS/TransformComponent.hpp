@@ -54,7 +54,7 @@ class TransformComponent : public Component
         void update() override
         {
             // Move player
-            // position.x += velocity.x * speed;
-            // position.y += velocity.y * speed;
+            position.x += velocity.x * speed;
+            position.y += velocity.y * speed;
         }
 };
