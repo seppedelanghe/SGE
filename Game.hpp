@@ -35,7 +35,8 @@ class Game {
 			groupMap,
 			groupPlayers,
 			groupEnemies,
-			groupColliders
+			groupColliders,
+			groupProjectiles
 		};
 
 	private:

@@ -56,6 +56,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     assets->AddTexture("tileset", "assets/tileset.png");
     assets->AddTexture("player", "assets/animation.png");
+    assets->AddTexture("projectile", "assets/cut/dirt.png");
 
     map = new Map("tileset", 2, 32);
     map->LoadMap(MAPFILE, 32, 32);
@@ -69,6 +70,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
         player.addGroup(groupPlayers);
+
+        assets->CreateProjectile(Vector2(600, 600), 200, 2, Vector2(2, 0), "projectile");
     }
     catch(const char* msg)
     {
@@ -82,6 +85,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
+auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::handleEvents()
 {
@@ -116,6 +120,15 @@ void Game::update()
             player.getComponent<TransformComponent>().position = pPos;
         }
         
+    }
+
+    for (auto& p : projectiles)
+    {
+        if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
+        {
+            std::cout << "Hit player" << std::endl;
+            p->destroy();
+        }
     }
 
     camera.x = player.getComponent<TransformComponent>().position.x - 400;
@@ -153,6 +166,11 @@ void Game::render()
     }
 
     for (auto& p : players)
+    {
+        p->draw();
+    }
+
+    for (auto& p : projectiles)
     {
         p->draw();
     }

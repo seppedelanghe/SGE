@@ -26,9 +26,9 @@ class SpriteComponent : public Component
         SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
         SpriteComponent() = default;
-        SpriteComponent(const char* path)
+        SpriteComponent(std::string tId)
         {
-            setTex(path);
+            setTex(tId);
         }
 
         SpriteComponent(std::string tId, int nFrames, int mSpeed)
