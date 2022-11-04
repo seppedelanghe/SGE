@@ -5,6 +5,8 @@
 #include "SDL2/SDL.h"
 #include "Animation.hpp"
 #include <map>
+#include <string>
+#include "../AssetManager.hpp"
 
 class SpriteComponent : public Component
 {
@@ -29,19 +31,17 @@ class SpriteComponent : public Component
             setTex(path);
         }
 
-        SpriteComponent(const char* path, int nFrames, int mSpeed)
+        SpriteComponent(std::string tId, int nFrames, int mSpeed)
         {
             animated = true;
             addAnimation("Idle", 0, nFrames, mSpeed);
 
             Play("Idle");
-
-            setTex(path);
+            setTex(tId);
         }
 
         ~SpriteComponent()
         {
-            SDL_DestroyTexture(texture);
         }
 
         void addAnimation(const char* name, int index, int nFrames, int speed)
@@ -50,9 +50,9 @@ class SpriteComponent : public Component
             animations.emplace(name, a);
         }
 
-        void setTex(const char* path)
+        void setTex(std::string tId)
         {
-            texture = TextureManager::LoadTexture(path);
+            texture = Game::assets->GetTexture(tId);
         }
 
         void init() override

@@ -2,6 +2,8 @@
 
 #include "Components.hpp"
 #include "SDL2/SDL.h"
+#include <string>
+#include "../AssetManager.hpp"
 
 class TileComponent : public Component
 {
@@ -11,9 +13,9 @@ class TileComponent : public Component
         Vector2 position;
 
         TileComponent() = default;
-        TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale, const char* path)
+        TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale, std::string tId)
         {
-            texture = TextureManager::LoadTexture(path);
+            texture = Game::assets->GetTexture(tId);
 
             position.x = xpos;
             position.y = ypos;

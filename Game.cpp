@@ -4,9 +4,9 @@
 #include "ECS/Components.hpp"
 #include "ECS/Vector2.hpp"
 #include "ECS/Collision.hpp"
+#include "AssetManager.hpp"
 
 const char* MAPFILE = "assets/map32x32.txt";
-const char* TILESETFILE = "assets/tileset.png";
 
 Map* map = nullptr;
 Manager manager;
@@ -15,6 +15,8 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
 SDL_Rect Game::camera = { 0, 0, 32 * 32, 32 * 32 };
+
+AssetManager* Game::assets = new AssetManager(&manager);
 
 bool Game::isRunning = false;
 
@@ -52,13 +54,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = false;
     }
 
-    map = new Map(TILESETFILE, 2, 32);
+    assets->AddTexture("tileset", "assets/tileset.png");
+    assets->AddTexture("player", "assets/animation.png");
+
+    map = new Map("tileset", 2, 32);
     map->LoadMap(MAPFILE, 32, 32);
 
     try
     {
         player.addComponent<TransformComponent>(400, 400, 24, 24, 4);
-        player.addComponent<SpriteComponent>("assets/animation.png", 2, 200);
+        player.addComponent<SpriteComponent>("player", 2, 200);
         player.getComponent<SpriteComponent>().addAnimation("Walk", 1, 4, 100);
 
         player.addComponent<KeyboardController>();
