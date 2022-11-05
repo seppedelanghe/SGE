@@ -9,3 +9,4 @@
 #include "ProjectileComponent.h"
 #include "ScoreComponent.hpp"
 #include "HealthComponent.hpp"
+#include "PickupComponent.hpp"

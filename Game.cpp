@@ -23,6 +23,7 @@ AssetManager* Game::assets = new AssetManager(&manager);
 bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
+auto& box(manager.addEntity());
 
 Game::Game()
 {}
@@ -58,7 +59,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     assets->AddTexture("tileset", "assets/pack.png");
     assets->AddTexture("player", "assets/human1.png");
-    assets->AddTexture("projectile", "assets/cut/dirt.png");
+    assets->AddTexture("box", "assets/cut/dirt.png");
 
     map = new Map("tileset", 2, 16);
     map->LoadMap(MAPFILE, 40, 40);
@@ -66,6 +67,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     try
     {
         player.addComponent<TransformComponent>(400, 400, 16, 16, 4);
+
         player.addComponent<SpriteComponent>("player", 1, 200, 1);
         player.getComponent<SpriteComponent>().addAnimation("Left", 0, 3, 100);
         player.getComponent<SpriteComponent>().addAnimation("Down", 1, 3, 100);
@@ -75,10 +77,19 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
         
-        
-        player.addComponent<ScoreComponent>();        
+        player.addComponent<ScoreComponent>(); // Keep score
+        player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
+
+
+
+        box.addComponent<TransformComponent>(600, 400);
+        box.addComponent<SpriteComponent>("box");
+        box.addComponent<ColliderComponent>("box");
+        box.addComponent<PickupComponent>("pointsbox", 10);
+        box.addGroup(groupCollectables);
+
     }
     catch(const char* msg)
     {
@@ -93,6 +104,7 @@ auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
+auto& collectables(manager.getGroup(Game::groupCollectables));
 
 void Game::handleEvents()
 {
@@ -125,7 +137,16 @@ void Game::update()
         {
             player.getComponent<TransformComponent>().position = pPos;
         }
-        
+    }
+
+    for (auto& c : collectables)
+    {
+        SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+        if (Collision::AABB(cCol, playerCol))
+        {
+            c->getComponent<PickupComponent>().Take(player);
+            c->destroy();
+        }
     }
 
     for (auto& p : projectiles)
@@ -178,6 +199,11 @@ void Game::render()
     for (auto& p : projectiles)
     {
         p->draw();
+    }
+
+    for (auto& c : collectables)
+    {
+        c->draw();
     }
  
     // Present render

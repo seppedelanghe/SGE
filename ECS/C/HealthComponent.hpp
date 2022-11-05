@@ -31,11 +31,13 @@ class HealthComponent : public Component
         void Decrease(int value = 1)
         {
             health -= value;
+            if (health < 0) { health = 0; }
         }
 
         void Increase(int value = 1)
         {
             health += value;
+            if (health > maxHealth) { health = maxHealth; }
         }
 
         int Value()
