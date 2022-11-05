@@ -33,10 +33,10 @@ class SpriteComponent : public Component
             setTex(tId);
         }
 
-        SpriteComponent(std::string tId, int nFrames, int mSpeed)
+        SpriteComponent(std::string tId, int nFrames, int mSpeed, int imgIndex = 0)
         {
             animated = true;
-            addAnimation("Idle", 0, nFrames, mSpeed);
+            addAnimation("Idle", imgIndex, nFrames, mSpeed);
 
             Play("Idle");
             setTex(tId);

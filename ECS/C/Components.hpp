@@ -7,3 +7,4 @@
 #include "ColliderComponent.hpp"
 #include "TileComponent.hpp"
 #include "ProjectileComponent.h"
+#include "ScoreComponent.hpp"

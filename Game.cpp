@@ -16,7 +16,7 @@ Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-SDL_Rect Game::camera = { 0, 0, 32 * 32, 32 * 32 };
+SDL_Rect Game::camera = { 0, 0, 20 * 16, 640 };
 
 AssetManager* Game::assets = new AssetManager(&manager);
 
@@ -57,23 +57,28 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     assets->AddTexture("tileset", "assets/pack.png");
-    assets->AddTexture("player", "assets/animation.png");
+    assets->AddTexture("player", "assets/human1.png");
     assets->AddTexture("projectile", "assets/cut/dirt.png");
 
     map = new Map("tileset", 2, 16);
-    map->LoadMap(MAPFILE, 20, 10);
+    map->LoadMap(MAPFILE, 40, 40);
 
     try
     {
-        player.addComponent<TransformComponent>(400, 400, 24, 24, 4);
-        player.addComponent<SpriteComponent>("player", 2, 200);
-        player.getComponent<SpriteComponent>().addAnimation("Walk", 1, 4, 100);
+        player.addComponent<TransformComponent>(400, 400, 16, 16, 4);
+        player.addComponent<SpriteComponent>("player", 1, 200, 1);
+        player.getComponent<SpriteComponent>().addAnimation("Left", 0, 3, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Down", 1, 3, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Up", 2, 3, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Right", 3, 3, 100);
 
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
+        
+        
+        player.addComponent<ScoreComponent>();        
+        
         player.addGroup(groupPlayers);
-
-        assets->CreateProjectile(Vector2(600, 600), 200, 2, Vector2(2, 0), "projectile");
     }
     catch(const char* msg)
     {
@@ -113,7 +118,6 @@ void Game::update()
     manager.refresh();
     manager.update();
 
-
     for (auto& c : colliders)
     {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
@@ -132,8 +136,8 @@ void Game::update()
         }
     }
 
-    camera.x = player.getComponent<TransformComponent>().position.x - 400;
-    camera.y = player.getComponent<TransformComponent>().position.y - 320;
+    camera.x = player.getComponent<TransformComponent>().position.x - camera.w / 2;
+    camera.y = player.getComponent<TransformComponent>().position.y - camera.h / 2;
 
     if (camera.x < 0)
         camera.x = 0;

@@ -7,6 +7,9 @@
 
 class KeyboardController : public Component
 {
+    private:
+        SDL_Keycode key = SDLK_AMPERSAND;
+
     public:
         TransformComponent *transform;
         SpriteComponent *sprite;
@@ -20,29 +23,32 @@ class KeyboardController : public Component
         void update() override
         {
             if (Game::event.type == SDL_KEYDOWN) 
-            {
+            {                
                 switch (Game::event.key.keysym.sym)
                 {
                 // NOTE: azerty
                 case SDLK_z:
                     transform->velocity.y = -1;
-                    sprite->Play("Walk");
+                    transform->velocity.x = 0;
+                    sprite->Play("Up");
                     break;
                 
                 case SDLK_s:
                     transform->velocity.y = 1;
-                    sprite->Play("Walk");
+                    transform->velocity.x = 0;
+                    sprite->Play("Down");
                     break;
 
                 case SDLK_q:
                     transform->velocity.x = -1;
-                    sprite->Play("Walk");
-                    sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+                    transform->velocity.y = 0;
+                    sprite->Play("Left");
                     break;
                 
                 case SDLK_d:
                     transform->velocity.x = 1;
-                    sprite->Play("Walk");
+                    transform->velocity.y = 0;
+                    sprite->Play("Right");
                     break;
 
                 case SDLK_ESCAPE:
@@ -52,36 +58,20 @@ class KeyboardController : public Component
                 default:
                     break;
                 }
+
+                key = Game::event.key.keysym.sym;
             }
 
             if (Game::event.type == SDL_KEYUP)
             {
-                switch (Game::event.key.keysym.sym)
+                if (Game::event.key.keysym.sym == key)
                 {
-                case SDLK_z: // w or z => azerty
+                    transform->velocity.x = 0;
                     transform->velocity.y = 0;
                     sprite->Play("Idle");
-                    break;
-                
-                case SDLK_s:
-                    transform->velocity.y = 0;
-                    sprite->Play("Idle");
-                    break;
-
-                case SDLK_q:
-                    sprite->Play("Idle");
-                    transform->velocity.x = 0;
-                    sprite->spriteFlip = SDL_FLIP_NONE;
-                    break;
-                
-                case SDLK_d:
-                    transform->velocity.x = 0;
-                    sprite->Play("Idle");
-                    break;
-
-                default:
-                    break;
+                    SDL_Keycode key = SDLK_AMPERSAND;
                 }
+
             }
         }
 };
