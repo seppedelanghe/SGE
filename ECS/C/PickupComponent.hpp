@@ -58,7 +58,6 @@ class PickupComponent : public Component
             try
             {
                 e.getComponent<ScoreComponent>().Increase(points);
-                e.getComponent<ScoreComponent>().Print();
                 points = 0;
             }
             catch(const std::exception& e)
@@ -75,6 +74,8 @@ class PickupComponent : public Component
             {
                 std::cerr << "Could not take health" << '\n';
             }
+
+            this->entity->destroy();
         }
 
 };

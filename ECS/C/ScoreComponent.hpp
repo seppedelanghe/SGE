@@ -2,6 +2,7 @@
 
 #include "Components.hpp"
 #include <string>
+#include <sstream>
 
 class ScoreComponent : public Component
 {
@@ -53,11 +54,11 @@ class ScoreComponent : public Component
             score = 0;
         }
 
-        void Print()
+        std::string AsString()
         {
-            std::cout << name << ": ";
-            printf("%d", score);
-            std::cout << std::endl;
+            std::stringstream ss;
+            ss << name << ": " << score;
+            return ss.str();
         }
 
         void init() override

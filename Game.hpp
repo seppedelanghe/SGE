@@ -37,7 +37,8 @@ class Game {
 			groupEnemies,
 			groupColliders,
 			groupProjectiles,
-			groupCollectables
+			groupCollectables,
+			groupUI,
 		};
 
 	private:

@@ -7,6 +7,7 @@
 #include "ECS/A/Map.hpp"
 #include "ECS/A/TextureManager.hpp"
 #include "ECS/A/AssetManager.hpp"
+#include <sstream>
 
 const char* MAPFILE = "assets/map.txt";
 
@@ -57,6 +58,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = false;
     }
 
+    if (TTF_Init() == -1)
+    {
+        std::cout << "Error : Failed to init TTF" << std::endl;
+    }
+
+    assets->AddFont("arial", "assets/arial.ttf", 16);
+
     assets->AddTexture("tileset", "assets/pack.png");
     assets->AddTexture("player", "assets/human1.png");
     assets->AddTexture("box", "assets/cut/dirt.png");
@@ -66,6 +74,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     try
     {
+
         player.addComponent<TransformComponent>(400, 400, 16, 16, 4);
 
         player.addComponent<SpriteComponent>("player", 1, 200, 1);
@@ -81,15 +90,25 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
+        
 
+        SDL_Color white = {255, 255, 255, 255};
+        auto& healthLabel(manager.addEntity());
+        healthLabel.addComponent<UILabel>(10, 10, "Health", "arial", white)
+            .AssociateHealth(&player.getComponent<HealthComponent>());
+        healthLabel.addGroup(Game::groupUI);
 
+        auto& scoreLabel(manager.addEntity());
+        scoreLabel.addComponent<UILabel>(10, 30, "Score", "arial", white)
+            .AssociateScore(&player.getComponent<ScoreComponent>());
+        scoreLabel.addGroup(Game::groupUI);
 
+        
         box.addComponent<TransformComponent>(600, 400);
         box.addComponent<SpriteComponent>("box");
         box.addComponent<ColliderComponent>("box");
         box.addComponent<PickupComponent>("pointsbox", 10);
         box.addGroup(groupCollectables);
-
     }
     catch(const char* msg)
     {
@@ -103,6 +122,7 @@ auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
 auto& collectables(manager.getGroup(Game::groupCollectables));
+auto& ui(manager.getGroup(Game::groupUI));
 
 void Game::handleEvents()
 {
@@ -203,7 +223,12 @@ void Game::render()
     {
         c->draw();
     }
- 
+
+    for (auto& u : ui)
+    {
+        u->draw();
+    }
+
     // Present render
     SDL_RenderPresent(renderer);
 }

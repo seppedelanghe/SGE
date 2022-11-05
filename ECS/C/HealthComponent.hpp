@@ -2,6 +2,7 @@
 
 #include "Components.hpp"
 #include <string>
+#include <sstream>
 
 class HealthComponent : public Component
 {
@@ -58,6 +59,13 @@ class HealthComponent : public Component
         bool IsMax()
         {
             return health == maxHealth;
+        }
+
+        std::string AsString()
+        {
+            std::stringstream ss;
+            ss << "Health: " << health << " / " << maxHealth;
+            return ss.str();
         }
 
         void Reset()
