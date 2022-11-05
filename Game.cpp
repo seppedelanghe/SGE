@@ -199,35 +199,7 @@ void Game::render()
     SDL_RenderClear(renderer);
     
     // Add stuff to render
-    for (auto& t : tiles)
-    {
-        t->draw();
-    }
-
-    for (auto& c : colliders)
-    {
-        c->draw();
-    }
-
-    for (auto& p : players)
-    {
-        p->draw();
-    }
-
-    for (auto& p : projectiles)
-    {
-        p->draw();
-    }
-
-    for (auto& c : collectables)
-    {
-        c->draw();
-    }
-
-    for (auto& u : ui)
-    {
-        u->draw();
-    }
+    manager.draw();
 
     // Present render
     SDL_RenderPresent(renderer);

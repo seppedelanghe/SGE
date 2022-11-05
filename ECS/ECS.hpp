@@ -7,6 +7,8 @@
 #include <bitset>
 #include <array>
 
+#include "../Game.hpp"
+
 class Component;
 class Entity;
 class Manager;
@@ -141,6 +143,14 @@ class Manager
 
         void draw() 
         {
+            // draw based on order of enum
+            for (Group g = Game::groupMap; g != Game::groupUI; g++ )
+            {
+                auto& entities = this->getGroup(g);
+                for (auto& e : entities) e->draw();
+            }
+
+            auto& entities = this->getGroup(Game::groupUI);
             for (auto& e : entities) e->draw();
         }
 
