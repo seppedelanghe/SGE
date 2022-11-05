@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Components.hpp"
 #include "SDL2/SDL.h"
 #include <string>
-#include "../AssetManager.hpp"
+
+#include "Components.hpp"
+
+#include "../A/AssetManager.hpp"
 
 class TileComponent : public Component
 {

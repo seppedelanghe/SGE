@@ -1,12 +1,14 @@
 #include "Game.hpp"
-#include "TextureManager.hpp"
-#include "Map.hpp"
-#include "ECS/Components.hpp"
+
 #include "ECS/Vector2.hpp"
 #include "ECS/Collision.hpp"
-#include "AssetManager.hpp"
 
-const char* MAPFILE = "assets/map32x32.txt";
+#include "ECS/C/Components.hpp"
+#include "ECS/A/Map.hpp"
+#include "ECS/A/TextureManager.hpp"
+#include "ECS/A/AssetManager.hpp"
+
+const char* MAPFILE = "assets/map.txt";
 
 Map* map = nullptr;
 Manager manager;
@@ -54,12 +56,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = false;
     }
 
-    assets->AddTexture("tileset", "assets/tileset.png");
+    assets->AddTexture("tileset", "assets/pack.png");
     assets->AddTexture("player", "assets/animation.png");
     assets->AddTexture("projectile", "assets/cut/dirt.png");
 
-    map = new Map("tileset", 2, 32);
-    map->LoadMap(MAPFILE, 32, 32);
+    map = new Map("tileset", 2, 16);
+    map->LoadMap(MAPFILE, 20, 10);
 
     try
     {
@@ -126,7 +128,6 @@ void Game::update()
     {
         if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
         {
-            std::cout << "Hit player" << std::endl;
             p->destroy();
         }
     }

@@ -1,5 +1,5 @@
 #include "AssetManager.hpp"
-#include "ECS/Components.hpp"
+#include "../C/Components.hpp"
 
 AssetManager::AssetManager(Manager* man) : manager(man)
 {}

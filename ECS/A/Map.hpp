@@ -13,6 +13,7 @@ class Map
 
     private:
         std::string texId;
+        bool hasCollision = false;
         int mapScale;
         int tileSize;
         int scaledSize;

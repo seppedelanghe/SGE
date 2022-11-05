@@ -1,5 +1,5 @@
 #include "Collision.hpp"
-#include "ColliderComponent.hpp"
+#include "C/ColliderComponent.hpp"
 
 bool Collision::AABB(const SDL_Rect& a, const SDL_Rect& b)
 {
@@ -13,7 +13,6 @@ bool Collision::AABB(const ColliderComponent& a, const ColliderComponent& b)
 {
     if (AABB(a.collider, b.collider))
     {
-        // std::cout << a.tag << " hit " << b.tag << std::endl;
         return true;
     }
 

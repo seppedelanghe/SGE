@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../Vector2.hpp"
 #include "Components.hpp"
-#include "Vector2.hpp"
 
 class ProjectileComponent : public Component
 {
@@ -25,7 +25,6 @@ class ProjectileComponent : public Component
             if (distance > range)
             {
                 entity->destroy();
-                std::cout << "range limit" << std::endl;
             } else if (
                 transform->position.x > Game::camera.x + Game::camera.w ||
                 transform->position.x < Game::camera.x ||
@@ -33,7 +32,6 @@ class ProjectileComponent : public Component
                 transform->position.y < Game::camera.y)
             {
                 entity->destroy();
-                std::cout << "Out of bounds" << std::endl;
             }
         }
 

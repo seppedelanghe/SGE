@@ -1,7 +1,7 @@
 
 
 #include "GameObject.hpp"
-#include "TextureManager.hpp"
+#include "ECS/A/TextureManager.hpp"
 
 GameObject::GameObject(const char* texturesheet)
 {

@@ -3,8 +3,8 @@
 #include <map>
 #include <string>
 #include "TextureManager.hpp"
-#include "ECS/Vector2.hpp"
-#include "ECS/ECS.hpp"
+#include "../Vector2.hpp"
+#include "../ECS.hpp"
 
 class AssetManager
 {
