@@ -1,1 +1,1 @@
-g++ -o main -I ./ECS *.cpp ECS/*cpp ECS/A/*cpp -lSDL2 -lSDL2_image
+g++ -o main -I ./ECS *.cpp ECS/*cpp ECS/A/*cpp -lSDL2 -lSDL2_image -lSDL2_ttf
