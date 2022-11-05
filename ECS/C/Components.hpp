@@ -8,3 +8,4 @@
 #include "TileComponent.hpp"
 #include "ProjectileComponent.h"
 #include "ScoreComponent.hpp"
+#include "HealthComponent.hpp"

@@ -8,7 +8,6 @@ class ScoreComponent : public Component
     private:
         int score;
         std::string name;
-        
 
     public:
         ScoreComponent()
