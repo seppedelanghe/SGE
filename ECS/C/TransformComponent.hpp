@@ -16,7 +16,7 @@ class TransformComponent : public Component
 
         int height = 32;
         int width = 32;
-        int scale = 2;
+        float scale = 2.0f;
 
         int speed = 3;
 
@@ -37,7 +37,7 @@ class TransformComponent : public Component
             position.y = y;
         }
 
-        TransformComponent(float x, float y, int w, int h, int scl)
+        TransformComponent(float x, float y, int w, int h, float scl = 2.0f)
         {
             position.x = x;
             position.y = y;

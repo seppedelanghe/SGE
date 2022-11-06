@@ -94,6 +94,13 @@ Vector2& Vector2::Zero()
     return *this;
 }
 
+Vector2& Vector2::Normalize()
+{
+    this->x /= this->length();
+    this->y /= this->length();
+    return *this;
+}
+
 // Nice printing
 std::ostream& operator<<(std::ostream& stream, const Vector2& vec)
 {

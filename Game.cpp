@@ -67,9 +67,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     assets->AddTexture("tileset", "assets/pack.png");
     assets->AddTexture("player", "assets/human1.png");
-    assets->AddTexture("box", "assets/cut/dirt.png");
+    assets->AddTexture("cash", "assets/items/cash.png");
 
-    map = new Map("tileset", 2, 16);
+    map = new Map("tileset", 2, 16, true);
     map->LoadMap(MAPFILE, 40, 40);
 
     try
@@ -86,7 +86,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
         
-        player.addComponent<ScoreComponent>(); // Keep score
+        player.addComponent<ScoreComponent>("money"); // Keep track of money
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
@@ -104,10 +104,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         scoreLabel.addGroup(Game::groupUI);
 
         
-        box.addComponent<TransformComponent>(600, 400);
-        box.addComponent<SpriteComponent>("box");
-        box.addComponent<ColliderComponent>("box");
-        box.addComponent<PickupComponent>("pointsbox", 10);
+        box.addComponent<TransformComponent>(600, 400, 101, 106, 0.3f);
+        box.addComponent<SpriteComponent>("cash");
+        box.addComponent<ColliderComponent>("cash");
+        box.addComponent<PickupComponent>("cash", 10);
         box.addGroup(groupCollectables);
     }
     catch(const char* msg)
@@ -153,7 +153,8 @@ void Game::update()
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
         if (Collision::AABB(cCol, playerCol))
         {
-            player.getComponent<TransformComponent>().position = pPos;
+            Vector2 colDir = *Collision::AABBDirection(cCol, playerCol);
+            player.getComponent<TransformComponent>().position = pPos - colDir;
         }
     }
 

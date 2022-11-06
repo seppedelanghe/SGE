@@ -14,6 +14,11 @@ class KeyboardController : public Component
         TransformComponent *transform;
         SpriteComponent *sprite;
 
+        bool IsActive()
+        {
+            return key != SDLK_AMPERSAND;
+        }
+
         void init() override
         {
             transform = &entity->getComponent<TransformComponent>();

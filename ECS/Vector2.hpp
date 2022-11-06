@@ -31,6 +31,7 @@ class Vector2
 
         Vector2& operator*(const int& i);
         Vector2& Zero();
+        Vector2& Normalize();
         
 
         friend std::ostream& operator<<(std::ostream& stream, const Vector2& vec);

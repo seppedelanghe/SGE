@@ -11,6 +11,17 @@ Map::Map(std::string tId, int mscl, int tsize)
     texId = tId;
     mapScale = mscl;
     tileSize = tsize;
+    hasCollision = false;
+
+    scaledSize = mscl * tsize;
+}
+
+Map::Map(std::string tId, int mscl, int tsize, bool hasCollisionMap)
+{
+    texId = tId;
+    mapScale = mscl;
+    tileSize = tsize;
+    hasCollision = hasCollisionMap;
 
     scaledSize = mscl * tsize;
 }

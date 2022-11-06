@@ -6,6 +6,7 @@ class Map
 {
     public:
         Map(std::string tId, int mscl, int tsize);
+        Map(std::string tId, int mscl, int tsize, bool hasCollisionMap);
         ~Map();
 
         void LoadMap(std::string path, int w, int h);
@@ -13,7 +14,7 @@ class Map
 
     private:
         std::string texId;
-        bool hasCollision = false;
+        bool hasCollision;
         int mapScale;
         int tileSize;
         int scaledSize;
