@@ -1,1 +1,1 @@
-g++ -o main -I ./ECS *.cpp ECS/*cpp ECS/A/*cpp -lSDL2 -lSDL2_image -lSDL2_ttf
+g++ -o main -I/opt/homebrew/Cellar/sdl2/2.28.5/include/ -L/opt/homebrew/Cellar/sdl2/2.28.5/lib -I ./ECS *.cpp ECS/*cpp ECS/A/*cpp -lSDL2 -lSDL2_image -lSDL2_ttf

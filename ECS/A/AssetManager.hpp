@@ -5,7 +5,7 @@
 #include "TextureManager.hpp"
 #include "../Vector2.hpp"
 #include "../ECS.hpp"
-#include "SDL2/SDL_ttf.h"
+#include "SDL_ttf.h"
 
 class AssetManager
 {
