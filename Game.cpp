@@ -65,17 +65,17 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     assets->AddFont("arial", "assets/arial.ttf", 16);
 
-    assets->AddTexture("tileset", "assets/pack.png");
-    assets->AddTexture("player", "assets/human1.png");
+    assets->AddTexture("tileset", "assets/sheet.png");
+    assets->AddTexture("player", "assets/luigi.png");
     assets->AddTexture("cash", "assets/items/cash.png");
 
-    map = new Map("tileset", 2, 16, true);
-    map->LoadMap(MAPFILE, 40, 40);
+    map = new Map("tileset", 1, 64, true);
+    map->LoadMap(MAPFILE, 12, 17);
 
     try
     {
 
-        player.addComponent<TransformComponent>(400, 400, 16, 16, 4);
+        player.addComponent<TransformComponent>(16 * 4, 16 * 4, 16, 16, 4);
 
         player.addComponent<SpriteComponent>("player", 1, 200, 1);
         player.getComponent<SpriteComponent>().addAnimation("Left", 0, 3, 100);

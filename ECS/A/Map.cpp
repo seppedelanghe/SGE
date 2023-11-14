@@ -1,29 +1,30 @@
 #include "Map.hpp"
 #include <fstream>
+#include <string.h>
 
 #include "../../Game.hpp"
 #include "../C/Components.hpp"
 
 extern Manager manager;
 
-Map::Map(std::string tId, int mscl, int tsize)
+Map::Map(std::string texture_id, int scale, int tile_size)
 {
-    texId = tId;
-    mapScale = mscl;
-    tileSize = tsize;
+    textureId = texture_id;
+    scaleFactor = scale;
+    tileSize = tile_size;
     hasCollision = false;
 
-    scaledSize = mscl * tsize;
+    scaledSize = scale * tile_size;
 }
 
-Map::Map(std::string tId, int mscl, int tsize, bool hasCollisionMap)
+Map::Map(std::string texture_id, int scale, int tile_size, bool has_collision_map)
 {
-    texId = tId;
-    mapScale = mscl;
-    tileSize = tsize;
-    hasCollision = hasCollisionMap;
+    textureId = texture_id;
+    scaleFactor = scale;
+    tileSize = tile_size;
+    hasCollision = has_collision_map;
 
-    scaledSize = mscl * tsize;
+    scaledSize = scale * tile_size;
 }
 
 Map::~Map()
@@ -32,8 +33,10 @@ Map::~Map()
 
 void Map::LoadMap(std::string path, int w, int h)
 {
-    char c[3];
-    int srcIdx;
+    char c[6];
+    int texture_x;
+    int texture_y;
+    int collisionLayer;
 
     std::fstream mapFile;
     mapFile.open(path);
@@ -42,33 +45,22 @@ void Map::LoadMap(std::string path, int w, int h)
     {
         for (int x = 0; x < w; x++)
         {
-            mapFile.get(c, 4);
-            srcIdx = atoi(c) * tileSize;
+            mapFile.get(c, 6);
+            printf("%s\n", c);
             
-            AddTile(srcIdx, 0, x * scaledSize, y * scaledSize);
-            mapFile.ignore(); // skip seperator
-        }
-    }
+            texture_x = c[0] - '0';
+            texture_y = c[2] - '0';
+            collisionLayer = c[4] - '0';
+            
+            AddTile(texture_x * tileSize, texture_y * tileSize, x * scaledSize, y * scaledSize);
 
-
-    if (hasCollision) {
-        mapFile.ignore(); // newline
-        char co;
-        for (int y = 0; y < h; y++)
-        {
-            for (int x = 0; x < w; x++)
-            {
-                mapFile.get(co);
-
-                if (co == '1')
-                {   
-                    auto& tcol(manager.addEntity());
-                    tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
-                    tcol.addGroup(Game::groupColliders);
-                }
-                mapFile.ignore();
+            if (collisionLayer > 0) {
+                auto& tcol(manager.addEntity());
+                tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
+                tcol.addGroup(Game::groupColliders);
             }
-            
+
+            mapFile.ignore(); // skip seperator
         }
     }
 
@@ -79,6 +71,6 @@ void Map::LoadMap(std::string path, int w, int h)
 void Map::AddTile(int srcX, int srcY, int xpos, int ypos)
 {
     auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, tileSize, mapScale, texId);
+    tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, tileSize, scaleFactor, textureId);
     tile.addGroup(Game::groupMap);
 }

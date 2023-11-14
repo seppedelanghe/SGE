@@ -1,5 +1,12 @@
 .vscode
 
+# assets
 assets/
+*.jpg
+*.png
+*.txt
+*.ttf
 
+# binaries
 main
+*.o

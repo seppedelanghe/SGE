@@ -5,17 +5,17 @@
 class Map
 {
     public:
-        Map(std::string tId, int mscl, int tsize);
-        Map(std::string tId, int mscl, int tsize, bool hasCollisionMap);
+        Map(std::string texture_id, int scale, int tile_size);
+        Map(std::string texture_id, int scale, int tile_size, bool has_collision_map);
         ~Map();
 
         void LoadMap(std::string path, int w, int h);
 		void AddTile(int srcX, int srcY, int xpos, int ypos);
 
     private:
-        std::string texId;
+        std::string textureId;
         bool hasCollision;
-        int mapScale;
+        int scaleFactor;
         int tileSize;
         int scaledSize;
 };
