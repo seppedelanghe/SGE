@@ -85,7 +85,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
         
-        player.addComponent<ScoreComponent>("money"); // Keep track of money
+        player.addComponent<ScoreComponent>("Cash"); // Keep track of money
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
@@ -142,14 +142,22 @@ void Game::update()
 {
 
     SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+
+    // TODO: change to Vector3 logic
     Vector2 pPos = player.getComponent<TransformComponent>().position;
+    int pZ = player.getComponent<TransformComponent>().zIndex;
 
     manager.refresh();
     manager.update();
 
     for (auto& c : colliders)
     {
+        int z = c->getComponent<ColliderComponent>().zIndex;
+        if (z != pZ) {continue;}
+
+
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+
         if (Collision::AABB(cCol, playerCol))
         {
             Vector2 colDir = *Collision::AABBDirection(cCol, playerCol);

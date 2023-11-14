@@ -25,7 +25,6 @@ Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_
     hasCollision = has_collision_map;
 
     scaledSize = (int)(scale * (float)tile_size);
-    printf("%d\n", scaledSize);
 }
 
 Map::~Map()

@@ -11,20 +11,23 @@ class ColliderComponent : public Component
     public:
         SDL_Rect collider;
         std::string tag;
+        int zIndex;
 
         SDL_Texture* tex;
         SDL_Rect srcR, destR;
 
         TransformComponent* transform;
 
-        ColliderComponent(std::string t)
+        ColliderComponent(std::string t, int z = 0)
         {
             tag = t;
+            zIndex = z;
         }
 
-        ColliderComponent(std::string t, int xpos, int ypos, int size)
+        ColliderComponent(std::string t, int xpos, int ypos, int size, int z = 0)
         {
             tag = t;
+            zIndex = z;
 
             collider.x = xpos;
             collider.y = ypos;
