@@ -1,13 +1,13 @@
-#include "Map.hpp"
 #include <fstream>
 #include <string.h>
 
+#include "Map.hpp"
 #include "../../Game.hpp"
 #include "../C/Components.hpp"
 
 extern Manager manager;
 
-Map::Map(std::string texture_id, int scale, int tile_size)
+Map::Map(std::string texture_id, float scale, int tile_size)
 {
     textureId = texture_id;
     scaleFactor = scale;
@@ -17,14 +17,15 @@ Map::Map(std::string texture_id, int scale, int tile_size)
     scaledSize = scale * tile_size;
 }
 
-Map::Map(std::string texture_id, int scale, int tile_size, bool has_collision_map)
+Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_map)
 {
     textureId = texture_id;
     scaleFactor = scale;
     tileSize = tile_size;
     hasCollision = has_collision_map;
 
-    scaledSize = scale * tile_size;
+    scaledSize = (int)(scale * (float)tile_size);
+    printf("%d\n", scaledSize);
 }
 
 Map::~Map()
@@ -46,12 +47,11 @@ void Map::LoadMap(std::string path, int w, int h)
         for (int x = 0; x < w; x++)
         {
             mapFile.get(c, 6);
-            printf("%s\n", c);
             
             texture_x = c[0] - '0';
             texture_y = c[2] - '0';
             collisionLayer = c[4] - '0';
-            
+
             AddTile(texture_x * tileSize, texture_y * tileSize, x * scaledSize, y * scaledSize);
 
             if (collisionLayer > 0) {

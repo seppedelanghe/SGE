@@ -1,3 +1,5 @@
+# env specific
+.DS_Store
 .vscode
 
 # assets
@@ -7,6 +9,9 @@ assets/
 *.txt
 *.ttf
 
-# binaries
+# build
 main
 *.o
+.cache/
+compile_commands.json
+

@@ -14,12 +14,19 @@ CFLAGS = --std=$(VERSION)
 CPP_SRC = $(wildcard *.cpp) $(wildcard ECS/*.cpp) $(wildcard ECS/A/*.cpp)
 OBJ_FILES = $(CPP_SRC:.cpp=.o)
 
+
 main: $(OBJ_FILES)
+	export DCMAKE_EXPORT_COMPILE_COMMANDS=1
 	$(CC) -o $@ $^ $(SDL2_INCLUDE_DIRS) $(INCLUDE_DIRS) $(SDL2_LINK_DIRS) $(LINK_DIRS) $(LIBS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(SDL2_INCLUDE_DIRS) $(SDL2_LINK_DIRS) $(INCLUDE_DIRS) -c -o $@ $<
 
-clean:
-	rm -f $(OBJ_FILES) main
+obj_clean:
+	rm -rf $(OBJ_FILES)
 
+clean: obj_clean
+	rm -f main
+
+run: main obj_clean
+	./main

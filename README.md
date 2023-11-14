@@ -46,3 +46,19 @@ make
 ./main
 ```
 
+
+# Game Development
+
+## Map
+
+Maps are tile maps defined in text based files with a fixed structure. \
+The structure is as following: `texture_x,texture_y:collision_layer`
+With a semicolon in between each tile as a seperator: `;`
+
+A map of 4x4 would look something like this:
+```
+1,0:1;1,0:1;1,0:1;1,0:1;
+1,0:1;2,3:0;2,3:1;1,0:1;
+1,0:1;2,3:0;2,3:1;1,0:1;
+1,0:1;1,0:1;1,0:1;1,0:1;
+```

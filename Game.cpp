@@ -65,8 +65,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     assets->AddFont("arial", "assets/arial.ttf", 16);
 
-    assets->AddTexture("tileset", "assets/sheet.png");
-    assets->AddTexture("player", "assets/luigi.png");
+    assets->AddTexture("tileset", "assets/sheet-small.png");
+    assets->AddTexture("player", "assets/humans.png");
     assets->AddTexture("cash", "assets/items/cash.png");
 
     map = new Map("tileset", 1, 64, true);
@@ -74,14 +74,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     try
     {
+        player.addComponent<TransformComponent>(16 * 10, 16 * 10, 128, 128, 0.5f);
 
-        player.addComponent<TransformComponent>(16 * 4, 16 * 4, 16, 16, 4);
-
-        player.addComponent<SpriteComponent>("player", 1, 200, 1);
-        player.getComponent<SpriteComponent>().addAnimation("Left", 0, 3, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Down", 1, 3, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Up", 2, 3, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Right", 3, 3, 100);
+        player.addComponent<SpriteComponent>("player", 1, 200, 0);
+        player.getComponent<SpriteComponent>().addAnimation("Left", 1, 1, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Down", 2, 1, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Up", 3, 1, 100);
+        player.getComponent<SpriteComponent>().addAnimation("Right", 4, 1, 100);
 
         player.addComponent<KeyboardController>();
         player.addComponent<ColliderComponent>("player");
