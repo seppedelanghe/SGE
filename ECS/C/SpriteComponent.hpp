@@ -19,10 +19,13 @@ class SpriteComponent : public Component
         SDL_Texture *texture;
         SDL_Rect srcRect, destRect;
 
+        std::string activeAnimation;
+
         bool animated = false;
         bool controllable = true;
-        int frames = 0;
-        int speed = 100; // delay between frames in ms
+        bool moving = false;
+        
+        std::string action;
         Vector2 look;
 
         void updateAnimation()
@@ -31,24 +34,39 @@ class SpriteComponent : public Component
                 return;
             }
 
-            look = transform->velocity.Copy().Ceil();
-            float angle = look.angle(true);
-
             if (transform->velocity.isZero()) {
-                Stop();
-            } else if (-45 < angle && angle <= 45) {
-                Play("Down");
-            } else if (45 < angle && angle < 135) {
-                Play("Right");
-            } else if ((135 < angle && angle <= 180) || (angle <= -135)) {
-                Play("Up");
+                moving = false;
             } else {
-                Play("Left");
+                look = transform->velocity.Copy().Ceil();
+                moving = true;
             }
+
+            std::string moveAnimation = "";
+            float angle = look.angle(true);
+            
+            if (-45 < angle && angle <= 45) {
+                moveAnimation = "Down";
+            } else if (45 < angle && angle < 135) {
+                moveAnimation = "Right";
+            } else if ((135 < angle && angle <= 180) || (angle <= -135)) {
+                moveAnimation = "Up";
+            } else {
+                moveAnimation = "Left";
+            }
+
+            if (!moving && action == "") {
+                action = "Idle";
+            }
+
+            if (action != "") {
+                moveAnimation = moveAnimation + action;
+            }
+            
+            Play(moveAnimation);
         }
 
     public:
-        int animIndex = 0;
+
         std::map<std::string, Animation> animations;
 
         SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
@@ -72,7 +90,7 @@ class SpriteComponent : public Component
         {
         }
 
-        void addAnimation(const char* name, int index, int nFrames, int speed)
+        void addAnimation(std::string name, int index, int nFrames, int speed)
         {
             Animation a = Animation(index, nFrames, speed);
             animations.emplace(name, a);
@@ -94,13 +112,15 @@ class SpriteComponent : public Component
 
         void update() override
         {
+            Animation *anim = &animations[activeAnimation];
+
             if (animated)
             {
                 updateAnimation();
-                srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / anim->speed) % anim->frames);
             }
 
-            srcRect.y = animIndex * transform->height;
+            srcRect.y = anim->index * transform->height;
 
             destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
             destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
@@ -114,15 +134,18 @@ class SpriteComponent : public Component
             TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
         }
 
-        void Play(std::string name)
+        void SetAction(std::string name) 
         {
-            frames = animations[name].frames;
-            animIndex = animations[name].index;
-            speed = animations[name].speed;
+            action = name;
         }
 
-        void Stop()
+        void UnsetAction() 
         {
-            frames = 1;
+            action = "";
+        }
+
+        void Play(std::string name)
+        {
+            activeAnimation = name;
         }
 };

@@ -91,17 +91,24 @@ void Game::setup()
 
         int playerAnimSpeed = 100;
         player.addComponent<SpriteComponent>("player", 1, playerAnimSpeed, 0);
+
         player.getComponent<SpriteComponent>().addAnimation("Down", 0, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Up", 1, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Right", 2, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Left", 3, 5, playerAnimSpeed);
-        
-        player.getComponent<SpriteComponent>().addAnimation("StrikeDown", 4, 5, playerAnimSpeed);
-        player.getComponent<SpriteComponent>().addAnimation("StrikeIdle", 4, 5, playerAnimSpeed);
-        player.getComponent<SpriteComponent>().addAnimation("StrikeUp", 5, 5, playerAnimSpeed);
-        player.getComponent<SpriteComponent>().addAnimation("StrikeRight", 6, 5, playerAnimSpeed);
-        player.getComponent<SpriteComponent>().addAnimation("StrikeLeft", 7, 5, playerAnimSpeed);
 
+        player.getComponent<SpriteComponent>().addAnimation("DownIdle", 0, 1, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("UpIdle", 1, 1, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("RightIdle", 2, 1, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("LeftIdle", 3, 1, playerAnimSpeed);
+
+        player.getComponent<SpriteComponent>().addAnimation("DownStrike", 4, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("UpStrike", 5, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("RightStrike", 6, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("LeftStrike", 7, 5, playerAnimSpeed);
+
+
+       
         player.addComponent<KeyboardController>();
         player.addComponent<MouseController>(&camera);
         player.addComponent<ColliderComponent>("player");

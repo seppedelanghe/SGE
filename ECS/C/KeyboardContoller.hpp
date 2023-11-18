@@ -38,6 +38,7 @@ class KeyboardController : public Component
 
                 case SDLK_SPACE:
                     actionKey = SDLK_SPACE;
+                    sprite->SetAction("Strike");
                     break;
 
                 case SDLK_ESCAPE:
@@ -72,6 +73,7 @@ class KeyboardController : public Component
 
                 case SDLK_SPACE:
                     actionKey = SDLK_AMPERSAND;
+                    sprite->UnsetAction();
                     break;
 
                 default:
@@ -86,6 +88,7 @@ class KeyboardController : public Component
 
     public:
         TransformComponent *transform;
+        SpriteComponent *sprite;
 
         bool IsActive()
         {
@@ -95,6 +98,7 @@ class KeyboardController : public Component
         void init() override
         {
             transform = &entity->getComponent<TransformComponent>();
+            sprite = &entity->getComponent<SpriteComponent>();
         }
 
         void update() override
