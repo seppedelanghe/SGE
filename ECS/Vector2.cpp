@@ -122,7 +122,19 @@ Vector2& Vector2::Round()
     return *this;
 }
 
+Vector2& Vector2::Ceil()
+{
+    this->x = ceil(this->x);
+    this->y = ceil(this->y);
+    return *this;
+}
 
+Vector2& Vector2::Floor()
+{
+    this->x = floor(this->x);
+    this->y = floor(this->y);
+    return *this;
+}
 
 Vector2 Vector2::Copy()
 {

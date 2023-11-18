@@ -37,6 +37,8 @@ class Vector2
         Vector2& Zero();
         Vector2& Normalize();
         Vector2& Round();
+        Vector2& Ceil();
+        Vector2& Floor();
         
         Vector2 Copy();
 

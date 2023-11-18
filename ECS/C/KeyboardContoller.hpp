@@ -83,39 +83,9 @@ class KeyboardController : public Component
             transform->velocity = direction;
         }
 
-        void updateAnimation()
-        {
-            float XvsY = abs(direction.x) - abs(direction.y);
-            std::string prefix = "";
-            std::string animation = "";
-
-            if (actionKey == SDLK_SPACE) {
-            }
-
-            if (XvsY > 0) {
-                if (direction.x < 0) {
-                    animation = "Left";
-                } else {
-                    animation = "Right";
-                }
-            } else if (XvsY < 0) {
-                if (direction.y < 0) {
-                    animation = "Up";
-                } else {
-                    animation = "Down";
-                }
-            }
-
-            if (animation.length() != 0) {
-                sprite->Play(animation);
-            } else {
-                sprite->Stop();
-            }
-        }
 
     public:
         TransformComponent *transform;
-        SpriteComponent *sprite;
 
         bool IsActive()
         {
@@ -125,12 +95,10 @@ class KeyboardController : public Component
         void init() override
         {
             transform = &entity->getComponent<TransformComponent>();
-            sprite = &entity->getComponent<SpriteComponent>();
         }
 
         void update() override
         {
             updateDirection();
-            updateAnimation();
         }
 };

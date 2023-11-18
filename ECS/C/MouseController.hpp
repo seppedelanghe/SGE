@@ -44,39 +44,8 @@ class MouseController : public Component
             std::cout << "Player position: " << transform->position << std::endl;
         }
 
-        void setIdle() {
-            sprite->Play("Idle");
-        }
-
-        void setAnimation(Vector2 diff)
-        {
-            // go left => -1
-            // go right => 1
-            //
-            // go up => -1
-            // go down => 1
-            
-            float XvsY = abs(diff.x) - abs(diff.y);
-            if (XvsY > 0) {
-                if (diff.x < 0) {
-                    sprite->Play("Left");
-                } else {
-                    sprite->Play("Right");
-                }
-            } else if (XvsY < 0) {
-                if (diff.y < 0) {
-                    sprite->Play("Up");
-                } else {
-                    sprite->Play("Down");
-                }
-            } else {
-                setIdle();
-            }
-        }
-
     public:
         TransformComponent *transform;
-        SpriteComponent *sprite;
 
         MouseController() = default;
         MouseController(SDL_Rect *gameCamera)
@@ -87,7 +56,6 @@ class MouseController : public Component
         void init() override 
         {
             transform = &entity->getComponent<TransformComponent>();
-            sprite = &entity->getComponent<SpriteComponent>();
         }
 
         void update() override
@@ -105,11 +73,9 @@ class MouseController : public Component
             if (diff.isZero()) {
                 unset = true;
                 transform->velocity.Zero();
-                sprite->Stop();
                 return;
             }
 
             transform->velocity = diff.Normalize();
-            setAnimation(diff);
         };
 };

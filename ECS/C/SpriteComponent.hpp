@@ -10,6 +10,7 @@
 #include "../A/Animation.hpp"
 #include "../A/TextureManager.hpp"
 #include "../A/AssetManager.hpp"
+#include "Vector2.hpp"
 
 class SpriteComponent : public Component
 {
@@ -19,12 +20,33 @@ class SpriteComponent : public Component
         SDL_Rect srcRect, destRect;
 
         bool animated = false;
+        bool controllable = true;
         int frames = 0;
         int speed = 100; // delay between frames in ms
+        Vector2 look;
+
+        void updateAnimation()
+        {
+            if (!controllable) {
+                return;
+            }
+
+            look = transform->velocity.Copy().Ceil();
+            float angle = look.angle(true);
+
+            if (-45 < angle && angle <= 45) {
+                Play("Down");
+            } else if (45 < angle && angle < 135) {
+                Play("Right");
+            } else if ((135 < angle && angle <= 180) || (angle <= -135)) {
+                Play("Up");
+            } else {
+                Play("Left");
+            }
+        }
 
     public:
         int animIndex = 0;
-        std::string name;
         std::map<std::string, Animation> animations;
 
         SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
@@ -72,6 +94,7 @@ class SpriteComponent : public Component
         {
             if (animated)
             {
+                updateAnimation();
                 srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
             }
 
@@ -82,8 +105,6 @@ class SpriteComponent : public Component
             
             destRect.w = static_cast<int>(transform->width * transform->scale);
             destRect.h = static_cast<int>(transform->height * transform->scale);
-
-
         }
 
         void draw() override
@@ -91,9 +112,8 @@ class SpriteComponent : public Component
             TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
         }
 
-        void Play(std::string animName)
+        void Play(std::string name)
         {
-            name = animName;
             frames = animations[name].frames;
             animIndex = animations[name].index;
             speed = animations[name].speed;
