@@ -24,7 +24,8 @@ class SpriteComponent : public Component
 
     public:
         int animIndex = 0;
-        std::map<const char*, Animation> animations;
+        std::string name;
+        std::map<std::string, Animation> animations;
 
         SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
@@ -90,9 +91,9 @@ class SpriteComponent : public Component
             TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
         }
 
-        void Play(const char* name)
+        void Play(std::string animName)
         {
-            printf("Play: %s\n", name);
+            name = animName;
             frames = animations[name].frames;
             animIndex = animations[name].index;
             speed = animations[name].speed;

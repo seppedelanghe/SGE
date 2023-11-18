@@ -90,7 +90,6 @@ class KeyboardController : public Component
             std::string animation = "";
 
             if (actionKey == SDLK_SPACE) {
-                prefix = "Strike";
             }
 
             if (XvsY > 0) {
@@ -107,10 +106,8 @@ class KeyboardController : public Component
                 }
             }
 
-            animation = prefix + animation;
             if (animation.length() != 0) {
-                printf("%s\n", animation.c_str());
-                sprite->Play(animation.c_str());
+                sprite->Play(animation);
             } else {
                 sprite->Stop();
             }

@@ -97,6 +97,7 @@ void Game::setup()
         player.getComponent<SpriteComponent>().addAnimation("Left", 3, 5, playerAnimSpeed);
         
         player.getComponent<SpriteComponent>().addAnimation("StrikeDown", 4, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("StrikeIdle", 4, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("StrikeUp", 5, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("StrikeRight", 6, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("StrikeLeft", 7, 5, playerAnimSpeed);
