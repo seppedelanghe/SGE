@@ -16,6 +16,7 @@ class Game {
 		~Game();
 
    	 	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+        void setup();
     
 		void handleEvents();
 		void update();	
@@ -32,12 +33,14 @@ class Game {
 
 		enum groupLabels : std::size_t
 		{
-			groupMap,
+			groupGround,
+            groupBuildings,
 			groupPlayers,
 			groupEnemies,
 			groupColliders,
 			groupProjectiles,
 			groupCollectables,
+            groupSky,
 			groupUI,
 		};
 

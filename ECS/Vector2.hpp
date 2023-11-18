@@ -13,6 +13,7 @@ class Vector2
 
         float angle(bool degrees);
         float length();
+        bool isZero();
 
         Vector2& Add(const Vector2& vec);
         Vector2& Sub(const Vector2& vec);
@@ -29,10 +30,15 @@ class Vector2
         Vector2& operator*=(const Vector2& vec);
         Vector2& operator/=(const Vector2& vec);
 
+        bool operator==(const Vector2& vec);
+        bool operator!=(const Vector2& vec);
+
         Vector2& operator*(const int& i);
         Vector2& Zero();
         Vector2& Normalize();
+        Vector2& Round();
         
+        Vector2 Copy();
 
         friend std::ostream& operator<<(std::ostream& stream, const Vector2& vec);
 };

@@ -144,7 +144,7 @@ class Manager
         void draw() 
         {
             // draw based on order of enum
-            for (Group g = Game::groupMap; g != Game::groupUI; g++ )
+            for (Group g = Game::groupGround; g != Game::groupUI; g++ )
             {
                 auto& entities = this->getGroup(g);
                 for (auto& e : entities) e->draw();

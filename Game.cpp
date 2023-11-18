@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+#include "C/MouseController.hpp"
 #include "ECS/Vector2.hpp"
 #include "ECS/Collision.hpp"
 
@@ -17,7 +18,7 @@ Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-SDL_Rect Game::camera = { 0, 0, 20 * 16, 640 };
+SDL_Rect Game::camera = { 0, 0, 960, 640 };
 
 AssetManager* Game::assets = new AssetManager(&manager);
 
@@ -63,26 +64,40 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         std::cout << "Error : Failed to init TTF" << std::endl;
     }
 
+    Game::setup();
+}
+
+
+void Game::setup() 
+{
     assets->AddFont("arial", "assets/arial.ttf", 16);
 
-    assets->AddTexture("tileset", "assets/sheet-small.png");
-    assets->AddTexture("player", "assets/humans.png");
-    assets->AddTexture("cash", "assets/items/cash.png");
+    // Ground
+    assets->AddTexture("grass", "assets/MiniWorldSprites/Ground/Grass.png");
+    assets->AddTexture("wild-grass", "assets/MiniWorldSprites/Ground/TexturedGrass.png");
 
-    map = new Map("tileset", 1, 64, true);
-    map->LoadMap(MAPFILE, 12, 17);
+    // Characters
+    assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
+
+    // items
+    assets->AddTexture("chest", "/assets/MiniWorldSprites/Miscellaneous/Chests.png");
+
+    map = new Map("grass", 2.0f, 16, true);
+    map->LoadMap(MAPFILE, 30, 20);
 
     try
     {
-        player.addComponent<TransformComponent>(16 * 10, 16 * 10, 128, 128, 0.5f);
+        player.addComponent<TransformComponent>(16 * 10, 16 * 10, 16, 16, 1);
 
-        player.addComponent<SpriteComponent>("player", 1, 200, 0);
-        player.getComponent<SpriteComponent>().addAnimation("Left", 1, 1, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Down", 2, 1, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Up", 3, 1, 100);
-        player.getComponent<SpriteComponent>().addAnimation("Right", 4, 1, 100);
+        int playerAnimSpeed = 100;
+        player.addComponent<SpriteComponent>("player", 1, playerAnimSpeed, 0);
+        player.getComponent<SpriteComponent>().addAnimation("Left", 3, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("Down", 0, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("Up", 1, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("Right", 2, 5, playerAnimSpeed);
 
         player.addComponent<KeyboardController>();
+        player.addComponent<MouseController>(&camera);
         player.addComponent<ColliderComponent>("player");
         
         player.addComponent<ScoreComponent>("Cash"); // Keep track of money
@@ -116,7 +131,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 }
 
 
-auto& tiles(manager.getGroup(Game::groupMap));
+auto& tiles(manager.getGroup(Game::groupGround));
+auto& buildings(manager.getGroup(Game::groupBuildings));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
@@ -143,19 +159,13 @@ void Game::update()
 
     SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 
-    // TODO: change to Vector3 logic
     Vector2 pPos = player.getComponent<TransformComponent>().position;
-    int pZ = player.getComponent<TransformComponent>().zIndex;
 
     manager.refresh();
     manager.update();
 
     for (auto& c : colliders)
     {
-        int z = c->getComponent<ColliderComponent>().zIndex;
-        if (z != pZ) {continue;}
-
-
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 
         if (Collision::AABB(cCol, playerCol))

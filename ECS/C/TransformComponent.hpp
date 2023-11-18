@@ -13,13 +13,12 @@ class TransformComponent : public Component
 
         Vector2 position;
         Vector2 velocity;
-        int zIndex = 0;
 
         int height = 32;
         int width = 32;
         float scale = 2.0f;
 
-        int speed = 3;
+        int speed = 1;
 
         TransformComponent()
         {

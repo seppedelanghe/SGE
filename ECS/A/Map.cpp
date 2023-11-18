@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <fstream>
 #include <string.h>
 
@@ -71,5 +72,5 @@ void Map::AddTile(int srcX, int srcY, int xpos, int ypos)
 {
     auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, tileSize, scaleFactor, textureId);
-    tile.addGroup(Game::groupMap);
+    tile.addGroup(Game::groupGround);
 }
