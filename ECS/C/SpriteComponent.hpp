@@ -34,7 +34,9 @@ class SpriteComponent : public Component
             look = transform->velocity.Copy().Ceil();
             float angle = look.angle(true);
 
-            if (-45 < angle && angle <= 45) {
+            if (transform->velocity.isZero()) {
+                Stop();
+            } else if (-45 < angle && angle <= 45) {
                 Play("Down");
             } else if (45 < angle && angle < 135) {
                 Play("Right");
