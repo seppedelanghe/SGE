@@ -56,6 +56,9 @@ class KeyboardController : public Component
                     sprite->Play("Right");
                     break;
 
+                case SDLK_SPACE:
+                    
+
                 case SDLK_ESCAPE:
                     Game::isRunning = false;
                     break;
@@ -73,7 +76,7 @@ class KeyboardController : public Component
                 {
                     transform->velocity.x = 0;
                     transform->velocity.y = 0;
-                    sprite->Play("Idle");
+                    sprite->Stop();
                     SDL_Keycode key = SDLK_AMPERSAND;
                 }
 

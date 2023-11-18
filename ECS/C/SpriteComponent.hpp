@@ -95,4 +95,9 @@ class SpriteComponent : public Component
             animIndex = animations[name].index;
             speed = animations[name].speed;
         }
+
+        void Stop()
+        {
+            frames = 1;
+        }
 };

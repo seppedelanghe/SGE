@@ -102,13 +102,14 @@ class MouseController : public Component
             diff -= transform->position;
             diff = diff.Round();
 
-            if (!diff.isZero()) {
-                transform->velocity = diff.Normalize();
-            } else {
+            if (diff.isZero()) {
                 unset = true;
                 transform->velocity.Zero();
+                sprite->Stop();
+                return;
             }
 
+            transform->velocity = diff.Normalize();
             setAnimation(diff);
         };
 };
