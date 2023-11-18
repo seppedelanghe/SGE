@@ -106,8 +106,12 @@ Vector2& Vector2::Zero()
 
 Vector2& Vector2::Normalize()
 {
-    this->x /= this->length();
-    this->y /= this->length();
+    if (this->x != 0) {
+        this->x /= this->length();
+    }
+    if (this->y != 0) {
+        this->y /= this->length();
+    }
     return *this;
 }
 

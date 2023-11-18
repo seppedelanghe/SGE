@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include <cstdio>
 #include <map>
 #include <string>
 
@@ -91,6 +92,7 @@ class SpriteComponent : public Component
 
         void Play(const char* name)
         {
+            printf("Play: %s\n", name);
             frames = animations[name].frames;
             animIndex = animations[name].index;
             speed = animations[name].speed;

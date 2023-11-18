@@ -1,6 +1,5 @@
 #include "Game.hpp"
 
-#include "C/MouseController.hpp"
 #include "ECS/Vector2.hpp"
 #include "ECS/Collision.hpp"
 
@@ -92,10 +91,15 @@ void Game::setup()
 
         int playerAnimSpeed = 100;
         player.addComponent<SpriteComponent>("player", 1, playerAnimSpeed, 0);
-        player.getComponent<SpriteComponent>().addAnimation("Left", 3, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Down", 0, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Up", 1, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("Right", 2, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("Left", 3, 5, playerAnimSpeed);
+        
+        player.getComponent<SpriteComponent>().addAnimation("StrikeDown", 4, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("StrikeUp", 5, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("StrikeRight", 6, 5, playerAnimSpeed);
+        player.getComponent<SpriteComponent>().addAnimation("StrikeLeft", 7, 5, playerAnimSpeed);
 
         player.addComponent<KeyboardController>();
         player.addComponent<MouseController>(&camera);
