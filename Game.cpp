@@ -27,7 +27,7 @@ AssetManager* Game::assets = new AssetManager(&manager);
 bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
-auto& box(manager.addEntity());
+auto& coin(manager.addEntity());
 
 Game::Game()
 {}
@@ -77,7 +77,7 @@ void Game::setup()
     assets->AddTexture("map", "assets/custom/map.png");
     assets->AddTexture("ground", "assets/custom/ground.png");
     assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
-    assets->AddTexture("chest", "assets/MiniWorldSprites/Miscellaneous/Chests.png");
+    assets->AddTexture("items", "assets/custom/items.png");
 
     map = new Map("map", 2.0f, 16, true);
     map->LoadMap(MAPFILE, 30, 20);
@@ -111,29 +111,35 @@ void Game::setup()
         player.addComponent<MouseController>(&camera);
         player.addComponent<ColliderComponent>("player");
         
-        player.addComponent<ScoreComponent>("Cash"); // Keep track of money
+        player.addComponent<ScoreComponent>("Coin");
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
         
 
-        SDL_Color white = {255, 255, 255, 255};
+        SDL_Color white = {250, 250, 250, 255};
         auto& healthLabel(manager.addEntity());
         healthLabel.addComponent<UILabel>(10, 10, "Health", "arial", white)
             .AssociateHealth(&player.getComponent<HealthComponent>());
         healthLabel.addGroup(Game::groupUI);
 
         auto& scoreLabel(manager.addEntity());
-        scoreLabel.addComponent<UILabel>(10, 30, "Score", "arial", white)
+        scoreLabel.addComponent<UILabel>(10, 30, "Coin", "arial", white)
             .AssociateScore(&player.getComponent<ScoreComponent>());
         scoreLabel.addGroup(Game::groupUI);
 
         
-        box.addComponent<TransformComponent>(600, 400, 101, 106, 0.3f);
-        box.addComponent<SpriteComponent>("cash");
-        box.addComponent<ColliderComponent>("cash");
-        box.addComponent<PickupComponent>("cash", 10);
-        box.addGroup(groupCollectables);
+        coin.addComponent<TransformComponent>(160, 200, 16, 16, 0.5f);
+        coin.addComponent<SpriteComponent>("items", 1, 100, 0);
+        coin.getComponent<SpriteComponent>().addAnimation("gold", 0, 1, 100);
+
+        coin.addComponent<ColliderComponent>("coins");
+        coin.addComponent<PickupComponent>("coins", 10);
+        coin.addGroup(groupCollectables);
+
+
+        
+
     }
     catch(const char* msg)
     {
