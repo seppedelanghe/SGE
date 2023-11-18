@@ -36,6 +36,8 @@ class MouseController : public Component
             target.y = (float)mouseY;
             target += cameraAdjust();
 
+            target -= Vector2((float)transform->width / 2, (float)transform->height / 2);
+
             unset = false;
             
             std::cout << "Player target: " << target << std::endl;
@@ -54,7 +56,7 @@ class MouseController : public Component
             // go up => -1
             // go down => 1
             
-            float XvsY = diff.x - diff.y;
+            float XvsY = abs(diff.x) - abs(diff.y);
             if (XvsY > 0) {
                 if (diff.x < 0) {
                     sprite->Play("Left");

@@ -1,16 +1,18 @@
 #pragma once
 
 #include <string>
+#include "../Game.hpp"
 
 class Map
 {
     public:
         Map(std::string texture_id, float scale, int tile_size);
         Map(std::string texture_id, float scale, int tile_size, bool has_collision_map);
+        Map(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group);
         ~Map();
 
         void LoadMap(std::string path, int w, int h);
-        void AddTile(int srcX, int srcY, int xpos, int ypos);
+        void AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group);
 
     private:
         std::string textureId;
@@ -18,4 +20,5 @@ class Map
         float scaleFactor;
         int tileSize;
         int scaledSize;
+        Game::groupLabels renderGroup;
 };

@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <fstream>
 #include <string.h>
+#include <string>
 
 #include "Map.hpp"
 #include "../../Game.hpp"
@@ -28,6 +29,19 @@ Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_
     scaledSize = (int)(scale * (float)tile_size);
 }
 
+Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group)
+{
+    textureId = texture_id;
+    scaleFactor = scale;
+    tileSize = tile_size;
+    hasCollision = has_collision_map;
+
+    scaledSize = (int)(scale * (float)tile_size);
+    renderGroup = group;
+}
+
+
+
 Map::~Map()
 {
 }
@@ -52,7 +66,7 @@ void Map::LoadMap(std::string path, int w, int h)
             texture_y = c[2] - '0';
             collisionLayer = c[4] - '0';
 
-            AddTile(texture_x * tileSize, texture_y * tileSize, x * scaledSize, y * scaledSize);
+            AddTile(texture_x * tileSize, texture_y * tileSize, x * scaledSize, y * scaledSize, renderGroup);
 
             if (collisionLayer > 0) {
                 auto& tcol(manager.addEntity());
@@ -68,9 +82,9 @@ void Map::LoadMap(std::string path, int w, int h)
 }
 
 
-void Map::AddTile(int srcX, int srcY, int xpos, int ypos)
+void Map::AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group)
 {
     auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, tileSize, scaleFactor, textureId);
-    tile.addGroup(Game::groupGround);
+    tile.addGroup(group);
 }

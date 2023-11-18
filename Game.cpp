@@ -11,8 +11,11 @@
 #include <sstream>
 
 const char* MAPFILE = "assets/map.txt";
+const char* GROUNDFILE = "assets/ground.txt";
 
 Map* map = nullptr;
+Map* ground = nullptr;
+
 Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -72,18 +75,16 @@ void Game::setup()
 {
     assets->AddFont("arial", "assets/arial.ttf", 16);
 
-    // Ground
-    assets->AddTexture("grass", "assets/MiniWorldSprites/Ground/Grass.png");
-    assets->AddTexture("wild-grass", "assets/MiniWorldSprites/Ground/TexturedGrass.png");
-
-    // Characters
+    assets->AddTexture("map", "assets/custom/map.png");
+    assets->AddTexture("ground", "assets/custom/ground.png");
     assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
+    assets->AddTexture("chest", "assets/MiniWorldSprites/Miscellaneous/Chests.png");
 
-    // items
-    assets->AddTexture("chest", "/assets/MiniWorldSprites/Miscellaneous/Chests.png");
-
-    map = new Map("grass", 2.0f, 16, true);
+    map = new Map("map", 2.0f, 16, true);
     map->LoadMap(MAPFILE, 30, 20);
+
+    ground = new Map("ground", 2.0f, 16, true);
+    ground->LoadMap(GROUNDFILE, 30, 20);
 
     try
     {
