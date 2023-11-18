@@ -107,8 +107,6 @@ void Game::setup()
         player.getComponent<SpriteComponent>().addAnimation("RightStrike", 6, 5, playerAnimSpeed);
         player.getComponent<SpriteComponent>().addAnimation("LeftStrike", 7, 5, playerAnimSpeed);
 
-
-       
         player.addComponent<KeyboardController>();
         player.addComponent<MouseController>(&camera);
         player.addComponent<ColliderComponent>("player");

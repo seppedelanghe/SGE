@@ -56,6 +56,8 @@ class SpriteComponent : public Component
 
             if (!moving && action == "") {
                 action = "Idle";
+            } else if (moving && action == "Idle") {
+                action = "";
             }
 
             if (action != "") {
