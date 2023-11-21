@@ -81,6 +81,7 @@ CoordinateList AStar::search(Vector2 origin, Vector2 target)
         for (uint i = 0; i < directions; i++) {
             Vector2 newCoordinates(current->coordinates + direction[i]);
             if (isBlocked(newCoordinates, closed)) {
+                std::cout << "Blocked" << newCoordinates << std::endl;
                 continue;
             }
 
@@ -123,7 +124,7 @@ bool AStar::isBlocked(Vector2 coord, NodeSet& closed)
     return (
         coord.x < 0 || coord.x >= w || coord.y < 0 || coord.y >= h ||
         std::find(walls.begin(), walls.end(), coord) != walls.end()
-        ) || findNode(coord, closed);
+        ) || findNode(coord, closed) == nullptr;
 };
 
 Node* AStar::findNode(Vector2 coord, NodeSet& nodes)
