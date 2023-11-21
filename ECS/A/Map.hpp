@@ -12,7 +12,10 @@ class Map
         ~Map();
 
         void LoadMap(std::string path, int w, int h);
+        void Fill(int texX, int texY, int w, int h, bool outerCollision);
+
         void AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group);
+        void AddCollisionTile(int x, int y);
 
     private:
         std::string textureId;

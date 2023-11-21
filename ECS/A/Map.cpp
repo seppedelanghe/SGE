@@ -46,6 +46,21 @@ Map::~Map()
 {
 }
 
+void Map::Fill(int texX, int texY, int w, int h, bool outerCollision)
+{
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            AddTile(texX, texY, x, y, Game::groupMap);
+
+            if (outerCollision) {
+                if (x == 0 || x == w-1 || y == 0 || y == h-1) {
+                    AddCollisionTile(x, y);
+                }
+            }
+        }
+    }
+}
+
 void Map::LoadMap(std::string path, int w, int h)
 {
     char c[6];
@@ -66,12 +81,10 @@ void Map::LoadMap(std::string path, int w, int h)
             texture_y = c[2] - '0';
             collisionLayer = c[4] - '0';
 
-            AddTile(texture_x * tileSize, texture_y * tileSize, x * scaledSize, y * scaledSize, renderGroup);
+            AddTile(texture_x, texture_y, x, y, renderGroup);
 
             if (collisionLayer > 0) {
-                auto& tcol(manager.addEntity());
-                tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
-                tcol.addGroup(Game::groupColliders);
+                AddCollisionTile(x, y);
             }
 
             mapFile.ignore(); // skip seperator
@@ -85,6 +98,12 @@ void Map::LoadMap(std::string path, int w, int h)
 void Map::AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group)
 {
     auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, tileSize, scaleFactor, textureId);
+    tile.addComponent<TileComponent>(srcX * tileSize, srcY * tileSize, xpos * scaledSize, ypos * scaledSize, tileSize, scaleFactor, textureId);
     tile.addGroup(group);
+}
+
+void Map::AddCollisionTile(int x, int y) {
+    auto& tcol(manager.addEntity());
+    tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
+    tcol.addGroup(Game::groupColliders);
 }

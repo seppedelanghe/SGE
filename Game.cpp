@@ -7,6 +7,7 @@
 #include "ECS/A/Map.hpp"
 #include "ECS/A/TextureManager.hpp"
 #include "ECS/A/AssetManager.hpp"
+#include "G/MapGenerator.hpp"
 #include <sstream>
 
 const char* MAPFILE = "assets/map.txt";
@@ -80,13 +81,30 @@ void Game::setup()
     assets->AddTexture("items", "assets/custom/items.png");
 
     map = new Map("map", 2.0f, 16, true);
-    map->LoadMap(MAPFILE, 30, 20);
+    map->Fill(2, 0, 60, 40, true);
+    // map->LoadMap(MAPFILE, 30, 20);
 
     ground = new Map("ground", 2.0f, 16, true);
-    ground->LoadMap(GROUNDFILE, 30, 20);
 
     try
     {
+        MapGenerator mapGenerator = MapGenerator();
+        mapGenerator.addOption(0,0,0);
+        mapGenerator.addOption(0,0,0);
+        mapGenerator.addOption(0,0,0);
+
+        mapGenerator.addOption(2, 0, 1);
+        mapGenerator.addOption(3, 0, 1);
+        mapGenerator.addOption(6, 0, 1);
+        mapGenerator.addOption(7, 0, 1);
+
+        mapGenerator.addOption(2, 1, 1);
+        mapGenerator.addOption(3, 1, 1);
+        mapGenerator.addOption(5, 1, 1);
+        mapGenerator.addOption(6, 1, 1);
+
+        mapGenerator.generate(ground, 30, 20);
+
         player.addComponent<TransformComponent>(16 * 10, 16 * 10, 16, 16, 1);
 
         int playerAnimSpeed = 100;
@@ -129,7 +147,7 @@ void Game::setup()
         scoreLabel.addGroup(Game::groupUI);
 
         
-        coin.addComponent<TransformComponent>(160, 200, 16, 16, 0.5f);
+        coin.addComponent<TransformComponent>(160, 200, 16, 16, 0.75f);
         coin.addComponent<SpriteComponent>("items", 1, 100, 0);
         coin.getComponent<SpriteComponent>().addAnimation("gold", 0, 1, 100);
 
