@@ -11,4 +11,5 @@
 #include "ScoreComponent.hpp"
 #include "HealthComponent.hpp"
 #include "PickupComponent.hpp"
+#include "PathFindingController.hpp"
 #include "../UI/UILabel.h"

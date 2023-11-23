@@ -1,4 +1,6 @@
 #include "Game.hpp"
+#include "Vector2.hpp"
+#include "services/AStar.hpp"
 
 Game *game = nullptr;
 
@@ -25,6 +27,7 @@ int main(int argc, const char * argv[]) {
 
         if (FRAME_DELAY > frameTime)
             SDL_Delay(FRAME_DELAY - frameTime); // wait => cap FPS
+
     }
 
     game->clean();

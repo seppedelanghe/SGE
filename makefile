@@ -10,7 +10,7 @@ INCLUDE_DIRS = -I./ECS
 SDL2_LINK_DIRS = -L$(SDL2_PATH)lib -L$(SDL2_IMG_PATH)lib -L$(SDL2_TTF_PATH)lib
 LINK_DIRS = 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
-CFLAGS = --std=$(VERSION)
+CFLAGS = --std=$(VERSION) -g
 CPP_SRC = $(wildcard *.cpp) $(wildcard ECS/*.cpp) $(wildcard ECS/A/*.cpp) $(wildcard ECS/G/*.cpp) $(wildcard services/*.cpp)
 OBJ_FILES = $(CPP_SRC:.cpp=.o)
 
