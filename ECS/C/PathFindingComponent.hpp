@@ -7,7 +7,7 @@
 #include <vector>
 
 
-class PathFindingController : public Component
+class PathFindingComponent : public Component
 {
     private:
         AStar* finder;
@@ -40,8 +40,8 @@ class PathFindingController : public Component
     public:
         TransformComponent *transform;
 
-        PathFindingController() = default;
-        PathFindingController(AStar* astar) {
+        PathFindingComponent() = default;
+        PathFindingComponent(AStar* astar) {
             finder = astar;
             active = false;
         }
