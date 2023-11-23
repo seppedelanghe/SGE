@@ -2,6 +2,7 @@
 #include "Vector2.hpp"
 #include "AStar.hpp"
 #include <algorithm>
+#include <cstdio>
 
 Node::Node(Vector2 coords_, Node* parent_ )
 {
@@ -15,17 +16,25 @@ uint Node::getScore()
     return G + H;
 };
 
-AStar::AStar(HeuristicFunction heuristicFn, uint width, uint height, uint n_directions)
+AStar::AStar(HeuristicFunction heuristicFn, int width, int height)
 {
     heuristic = heuristicFn;
     w = width;
     h = height;
-    directions = n_directions;
+};
+
+void AStar::UpdateSize(int width, int height)
+{
+    w = width;
+    h = height;
 };
 
 void AStar::AddWall(Vector2 wall)
 {
-    walls.push_back(wall);
+    auto it = std::find(walls.begin(), walls.end(), wall);
+    if (it == walls.end()) {
+        walls.push_back(wall);
+    }
 };
 
 void AStar::RemoveWall(Vector2 wall)
@@ -45,7 +54,7 @@ CoordinateList AStar::search(Vector2 origin, Vector2 target)
 {
     Node* current;
     NodeSet open, closed;
-
+    
     // Memory saving
     uint maxSize = (w * h) - walls.size();
     if (maxSize > 100) {
@@ -72,20 +81,23 @@ CoordinateList AStar::search(Vector2 origin, Vector2 target)
         }
 
         if (current->coordinates == target) {
+
             break;
         }
 
         closed.push_back(current);
         open.erase(current_it);
 
-        for (uint i = 0; i < directions; i++) {
-            Vector2 newCoordinates(current->coordinates + direction[i]);
+
+        for (Vector2 vec : direction) {
+            Vector2 newCoordinates = current->coordinates.Copy();
+            newCoordinates -= vec;
+
             if (isBlocked(newCoordinates, closed)) {
-                std::cout << "Blocked" << newCoordinates << std::endl;
                 continue;
             }
 
-            uint cost = current->G + ((i < 4) ? 10 : 14);
+            uint cost = current->G + 10;
             Node* successor = findNode(newCoordinates, open);
             if (successor == nullptr) {
                 successor = new Node(newCoordinates, current);
@@ -124,7 +136,7 @@ bool AStar::isBlocked(Vector2 coord, NodeSet& closed)
     return (
         coord.x < 0 || coord.x >= w || coord.y < 0 || coord.y >= h ||
         std::find(walls.begin(), walls.end(), coord) != walls.end()
-        ) || findNode(coord, closed) == nullptr;
+        ) || findNode(coord, closed) != nullptr;
 };
 
 Node* AStar::findNode(Vector2 coord, NodeSet& nodes)

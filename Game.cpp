@@ -8,6 +8,7 @@
 #include "ECS/A/TextureManager.hpp"
 #include "ECS/A/AssetManager.hpp"
 #include "G/MapGenerator.hpp"
+#include <cstdio>
 #include <sstream>
 
 const char* MAPFILE = "assets/map.txt";
@@ -15,6 +16,7 @@ const char* GROUNDFILE = "assets/ground.txt";
 
 Map* map = nullptr;
 Map* ground = nullptr;
+AStar astar = AStar(Heuristic::euclidiean);
 
 Manager manager;
 
@@ -133,7 +135,14 @@ void Game::setup()
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
+
+        // astar.AddWall(Vector2(12, 10));
+        astar.UpdateSize(30, 20);
         
+        Vector2 target = Vector2(4, 4);
+
+        player.addComponent<PathFindingController>(&astar);
+        player.getComponent<PathFindingController>().SetTarget(target);
 
         SDL_Color white = {250, 250, 250, 255};
         auto& healthLabel(manager.addEntity());
@@ -155,14 +164,12 @@ void Game::setup()
         coin.addComponent<PickupComponent>("coins", 10);
         coin.addGroup(groupCollectables);
 
-
-        
-
     }
     catch(const char* msg)
     {
         std::cerr << "Error: " << msg << std::endl;
     }
+
 }
 
 
@@ -202,6 +209,7 @@ void Game::update()
     for (auto& c : colliders)
     {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+        astar.AddWall(Vector2(cCol.x, cCol.y));
 
         if (Collision::AABB(cCol, playerCol))
         {

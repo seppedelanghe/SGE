@@ -19,7 +19,8 @@ using CoordinateList = std::vector<Vector2>;
 class AStar
 {
     public:
-        AStar(HeuristicFunction heuristicFn, uint width, uint height, uint directions = 4);
+        AStar(HeuristicFunction heuristicFn, int width = 10, int height = 10);
+        void UpdateSize(int width, int height);
         void AddWall(Vector2 wall);
         void RemoveWall(Vector2 wall);
         void ClearWalls();
@@ -31,11 +32,12 @@ class AStar
 
         HeuristicFunction heuristic;
         CoordinateList walls;
-        uint w, h, directions;
+        int w, h;
 
         // no diagonal
         CoordinateList direction = {
-            { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }
+            Vector2(0, 1), Vector2(1, 0),
+            Vector2(0, -1), Vector2(-1, 0),
         };
 };
 
