@@ -141,8 +141,8 @@ void Game::setup()
         
         Vector2 target = Vector2(4, 4);
 
-        player.addComponent<PathFindingController>(&astar);
-        player.getComponent<PathFindingController>().SetTarget(target);
+        player.addComponent<PathFindingComponent>(&astar);
+        player.getComponent<PathFindingComponent>().SetTarget(target);
 
         SDL_Color white = {250, 250, 250, 255};
         auto& healthLabel(manager.addEntity());
