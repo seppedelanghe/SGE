@@ -34,6 +34,7 @@ void AStar::AddWall(Vector2 wall)
     auto it = std::find(walls.begin(), walls.end(), wall);
     if (it == walls.end()) {
         walls.push_back(wall);
+        std::cout << "Wall: " << wall << std::endl;
     }
 };
 
@@ -90,7 +91,7 @@ CoordinateList AStar::search(Vector2 origin, Vector2 target)
 
 
         for (Vector2 vec : direction) {
-            Vector2 newCoordinates = current->coordinates.Copy();
+            Vector2 newCoordinates = current->coordinates.Clone();
             newCoordinates -= vec;
 
             if (isBlocked(newCoordinates, closed)) {

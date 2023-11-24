@@ -37,7 +37,7 @@ class SpriteComponent : public Component
             if (transform->velocity.isZero()) {
                 moving = false;
             } else {
-                look = transform->velocity.Copy().Ceil();
+                look = transform->velocity.Clone().Ceil();
                 moving = true;
             }
 

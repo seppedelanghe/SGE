@@ -10,6 +10,10 @@ class Vector2
 
         Vector2();
         Vector2(float x, float y);
+        
+        Vector2 Clone() const {
+            return Vector2(x, y);
+        }
 
         float angle(bool degrees);
         float length();
@@ -40,7 +44,5 @@ class Vector2
         Vector2& Ceil();
         Vector2& Floor();
         
-        Vector2 Copy();
-
         friend std::ostream& operator<<(std::ostream& stream, const Vector2& vec);
 };

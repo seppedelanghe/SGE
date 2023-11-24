@@ -136,11 +136,6 @@ Vector2& Vector2::Floor()
     return *this;
 }
 
-Vector2 Vector2::Copy()
-{
-    return Vector2(this->x, this->y);
-}
-
 
 
 // Nice printing

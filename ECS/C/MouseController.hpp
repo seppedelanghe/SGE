@@ -15,7 +15,6 @@ class MouseController : public Component
     private:
         Vector2 target;
         SDL_Rect *camera;
-        bool unset = true;
 
         Vector2 cameraAdjust() {
             Vector2 adjust;
@@ -37,8 +36,7 @@ class MouseController : public Component
             target += cameraAdjust();
 
             target -= Vector2((float)transform->width / 2, (float)transform->height / 2);
-
-            unset = false;
+            pathFinding->SetTarget(target);
             
             std::cout << "Player target: " << target << std::endl;
             std::cout << "Player position: " << transform->position << std::endl;
@@ -46,6 +44,7 @@ class MouseController : public Component
 
     public:
         TransformComponent *transform;
+        PathFindingComponent *pathFinding;
 
         MouseController() = default;
         MouseController(SDL_Rect *gameCamera)
@@ -56,6 +55,7 @@ class MouseController : public Component
         void init() override 
         {
             transform = &entity->getComponent<TransformComponent>();
+            pathFinding = &entity->getComponent<PathFindingComponent>();
         }
 
         void update() override
@@ -64,18 +64,16 @@ class MouseController : public Component
                 setTarget();
             }
 
-            if (unset) { return; }
-
-            Vector2 diff = target.Copy();
-            diff -= transform->position;
-            diff = diff.Round();
-
-            if (diff.isZero()) {
-                unset = true;
-                transform->velocity.Zero();
-                return;
-            }
-
-            transform->velocity = diff.Normalize();
+            // Vector2 diff = target.Copy();
+            // diff -= transform->position;
+            // diff = diff.Round();
+            //
+            // if (diff.isZero()) {
+            //     unset = true;
+            //     transform->velocity.Zero();
+            //     return;
+            // }
+            //
+            // transform->velocity = diff.Normalize();
         };
 };

@@ -14,6 +14,7 @@
 const char* MAPFILE = "assets/map.txt";
 const char* GROUNDFILE = "assets/ground.txt";
 
+int* mapSize = new int[2] { 30, 20 };
 Map* map = nullptr;
 Map* ground = nullptr;
 AStar astar = AStar(Heuristic::euclidiean);
@@ -83,7 +84,7 @@ void Game::setup()
     assets->AddTexture("items", "assets/custom/items.png");
 
     map = new Map("map", 2.0f, 16, true);
-    map->Fill(2, 0, 60, 40, true);
+    map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
     // map->LoadMap(MAPFILE, 30, 20);
 
     ground = new Map("ground", 2.0f, 16, true);
@@ -105,7 +106,9 @@ void Game::setup()
         mapGenerator.addOption(5, 1, 1);
         mapGenerator.addOption(6, 1, 1);
 
-        mapGenerator.generate(ground, 30, 20);
+        mapGenerator.generate(ground, mapSize[0], mapSize[1]);
+        
+        astar.UpdateSize(mapSize[0] * 16, mapSize[1] * 16);
 
         player.addComponent<TransformComponent>(16 * 10, 16 * 10, 16, 16, 1);
 
@@ -128,6 +131,9 @@ void Game::setup()
         player.getComponent<SpriteComponent>().addAnimation("LeftStrike", 7, 5, playerAnimSpeed);
 
         player.addComponent<KeyboardController>();
+        player.addComponent<PathFindingComponent>(&astar);
+        player.getComponent<PathFindingComponent>().SetNormilizer(16);
+
         player.addComponent<MouseController>(&camera);
         player.addComponent<ColliderComponent>("player");
         
@@ -135,14 +141,6 @@ void Game::setup()
         player.addComponent<HealthComponent>(100, 75); // 100 max => 75 start
         
         player.addGroup(groupPlayers);
-
-        // astar.AddWall(Vector2(12, 10));
-        astar.UpdateSize(30, 20);
-        
-        Vector2 target = Vector2(4, 4);
-
-        player.addComponent<PathFindingComponent>(&astar);
-        player.getComponent<PathFindingComponent>().SetTarget(target);
 
         SDL_Color white = {250, 250, 250, 255};
         auto& healthLabel(manager.addEntity());
@@ -209,7 +207,7 @@ void Game::update()
     for (auto& c : colliders)
     {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-        astar.AddWall(Vector2(cCol.x, cCol.y));
+        astar.AddWall(Vector2(cCol.x / 16, cCol.y / 16));
 
         if (Collision::AABB(cCol, playerCol))
         {

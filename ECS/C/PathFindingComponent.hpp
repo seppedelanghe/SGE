@@ -13,6 +13,7 @@ class PathFindingComponent : public Component
         AStar* finder;
         Vector2 origin;
         Vector2 target;
+        Vector2 normalizer = Vector2(1, 1);
         CoordinateList path;
         bool active;
 
@@ -23,19 +24,38 @@ class PathFindingComponent : public Component
                 std::cout << "deactivate path finding" << std::endl;
                 return;
             }
+            
+            UpdateOrigin();
 
             Vector2 vec = *(path.begin());
-            vec = vec.Round();
+            Vector2 delta = vec.Clone();
+            delta -= origin;
 
-            if (origin == vec) {
+            if (delta.isZero()) {
                 path.erase(path.begin());
                 FollowPath();
-                return;
             }
 
-            Vector2 delta = vec - origin;
             transform->velocity = delta.Normalize();
         };
+
+        void UpdateOrigin()
+        {
+            origin = transform->position.Clone();
+            origin = origin / normalizer;
+            origin = origin.Round();
+        }
+
+        void UpdatePath()
+        {
+            UpdateOrigin();
+
+            path = finder->search(origin, target);
+            std::reverse(path.begin(), path.end());
+
+            for (Vector2 vec : path)
+                std::cout << "Path " << vec << std::endl;
+        }
 
     public:
         TransformComponent *transform;
@@ -61,21 +81,28 @@ class PathFindingComponent : public Component
                 return;
             }
             
-            origin = Vector2(transform->position.x / transform->width, transform->position.y / transform->height);
-            origin = origin.Round();
-
-            if (path.size() > 0) {
-                FollowPath();
-                return;
+            if (path.size() == 0) {
+                UpdatePath(); 
             }
+            
+            FollowPath();
 
-            path = finder->search(origin, target);
-            std::reverse(path.begin(), path.end());
         };
 
-        void SetTarget(Vector2 coord) {
-            
-            target = coord;
+        void SetNormilizer(int divider)
+        {
+            normalizer = Vector2(divider, divider);
+        }
+
+        void SetNormilizer(int x, int y)
+        {
+            normalizer = Vector2(x, y);
+        }
+
+        void SetTarget(Vector2 coord) 
+        {
+            target = coord / normalizer;
+            target = target.Round();
             active = true;
         }
 };
