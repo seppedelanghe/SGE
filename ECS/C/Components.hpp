@@ -4,6 +4,7 @@
 #include "TransformComponent.hpp"
 #include "SpriteComponent.hpp"
 #include "KeyboardContoller.hpp"
+#include "PathFindingComponent.hpp"
 #include "MouseController.hpp"
 #include "ColliderComponent.hpp"
 #include "TileComponent.hpp"
@@ -11,5 +12,4 @@
 #include "ScoreComponent.hpp"
 #include "HealthComponent.hpp"
 #include "PickupComponent.hpp"
-#include "PathFindingComponent.hpp"
 #include "../UI/UILabel.h"
