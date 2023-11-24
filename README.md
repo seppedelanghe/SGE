@@ -47,6 +47,25 @@ make
 ```
 
 
+
+
+# Folders
+
+## ECS
+__Entity component system__
+Contains all code for entities and components to link to them.
+
+## IS
+__Interaction systems__
+Contains all code to create systems to interact with:
+- Map generation
+- UI
+
+
+
+
+
+
 # Game Development
 
 ## Map
