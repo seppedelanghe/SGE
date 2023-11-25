@@ -11,7 +11,7 @@ class MapBuilder
         MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group);
         ~MapBuilder();
 
-        void LoadMapBuilder(std::string path, int w, int h);
+        void LoadMap(std::string path, int w, int h);
         void Fill(int texX, int texY, int w, int h, bool outerCollision);
 
         void AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group);

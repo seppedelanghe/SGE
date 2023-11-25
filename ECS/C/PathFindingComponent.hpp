@@ -1,10 +1,12 @@
-#include "../services/AStar.hpp"
-#include "C/TransformComponent.hpp"
-#include "ECS.hpp"
-#include "Vector2.hpp"
+
 #include <algorithm>
 #include <cstdio>
 #include <vector>
+
+#include "ECS/C/TransformComponent.hpp"
+#include "ECS.hpp"
+#include "IS/Physics/Vector2.hpp"
+#include "Services/AStar.hpp"
 
 
 class PathFindingComponent : public Component

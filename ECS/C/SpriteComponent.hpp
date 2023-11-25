@@ -7,10 +7,10 @@
 
 #include "Components.hpp"
 
-#include "../A/Animation.hpp"
-#include "../A/TextureManager.hpp"
-#include "../A/AssetManager.hpp"
-#include "Vector2.hpp"
+#include "ECS/A/Animation.hpp"
+#include "ECS/A/TextureManager.hpp"
+#include "ECS/A/AssetManager.hpp"
+#include "IS/Physics/Vector2.hpp"
 
 class SpriteComponent : public Component
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Vector2.hpp"
 #include "Components.hpp"
+#include "IS/Physics/Vector2.hpp"
 
 class ProjectileComponent : public Component
 {

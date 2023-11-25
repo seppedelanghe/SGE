@@ -1,14 +1,14 @@
 #pragma once
 
+#include <cstdio>
+#include <ostream>
 #include "Components.hpp"
-#include "ECS.hpp"
+#include "ECS/ECS.hpp"
 #include "SDL_events.h"
 #include "SDL_keycode.h"
 #include "SDL_mouse.h"
-#include "Vector2.hpp"
-#include <cstdio>
-#include <ostream>
 
+#include "IS/Physics/Vector2.hpp"
 
 class MouseController : public Component 
 {

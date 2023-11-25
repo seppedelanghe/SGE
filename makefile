@@ -6,14 +6,15 @@ SDL2_IMG_PATH = /opt/homebrew/Cellar/sdl2_image/2.6.3_2/
 SDL2_TTF_PATH = /opt/homebrew/Cellar/sdl2_ttf/2.20.2/
 
 SDL2_INCLUDE_DIRS = -I$(SDL2_PATH)include/SDL2 -I$(SDL2_IMG_PATH)include/SDL2 -I$(SDL2_TTF_PATH)include/SDL2
-INCLUDE_DIRS = -I./ECS
+INCLUDE_DIRS = -I. -I./ECS -I./IS -I./Services -I./Utils
 SDL2_LINK_DIRS = -L$(SDL2_PATH)lib -L$(SDL2_IMG_PATH)lib -L$(SDL2_TTF_PATH)lib
 LINK_DIRS = 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 CFLAGS = --std=$(VERSION) -g
-CPP_SRC = $(wildcard *.cpp) $(wildcard ECS/*.cpp) $(wildcard ECS/A/*.cpp) $(wildcard ECS/G/*.cpp) $(wildcard services/*.cpp)
-OBJ_FILES = $(CPP_SRC:.cpp=.o)
 
+rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+CPP_SRC = $(call rwildcard,,*.cpp)
+OBJ_FILES = $(CPP_SRC:.cpp=.o)
 
 main: $(OBJ_FILES)
 	export DCMAKE_EXPORT_COMPILE_COMMANDS=1

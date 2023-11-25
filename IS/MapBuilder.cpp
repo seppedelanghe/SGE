@@ -4,8 +4,8 @@
 #include <string>
 
 #include "MapBuilder.hpp"
-#include "../../Game.hpp"
-#include "../C/Components.hpp"
+#include "../Game.hpp"
+#include "../ECS/C/Components.hpp"
 
 extern Manager manager;
 

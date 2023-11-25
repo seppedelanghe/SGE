@@ -1,22 +1,24 @@
-#include "Game.hpp"
-
-#include "ECS/Vector2.hpp"
-#include "ECS/Collision.hpp"
-
-#include "ECS/C/Components.hpp"
-#include "ECS/A/Map.hpp"
-#include "ECS/A/TextureManager.hpp"
-#include "ECS/A/AssetManager.hpp"
-#include "G/MapGenerator.hpp"
 #include <cstdio>
 #include <sstream>
+
+#include "Game.hpp"
+
+#include "ECS/C/Components.hpp"
+#include "ECS/A/TextureManager.hpp"
+#include "ECS/A/AssetManager.hpp"
+
+#include "IS/Physics/Vector2.hpp"
+#include "IS/Physics/Collision.hpp"
+#include "IS/MapBuilder.hpp"
+#include "IS/Generators/MapGenerator.hpp"
+#include "UI/UILabel.h"
 
 const char* MAPFILE = "assets/map.txt";
 const char* GROUNDFILE = "assets/ground.txt";
 
 int* mapSize = new int[2] { 30, 20 };
-Map* map = nullptr;
-Map* ground = nullptr;
+MapBuilder* map = nullptr;
+MapBuilder* ground = nullptr;
 AStar astar = AStar(Heuristic::euclidiean);
 
 Manager manager;
@@ -83,11 +85,11 @@ void Game::setup()
     assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
     assets->AddTexture("items", "assets/custom/items.png");
 
-    map = new Map("map", 2.0f, 16, true);
+    map = new MapBuilder("map", 2.0f, 16, true);
     map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
     // map->LoadMap(MAPFILE, 30, 20);
 
-    ground = new Map("ground", 2.0f, 16, true);
+    ground = new MapBuilder("ground", 2.0f, 16, true);
 
     try
     {
