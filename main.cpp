@@ -1,6 +1,5 @@
 #include "Game.hpp"
-#include "Vector2.hpp"
-#include "services/AStar.hpp"
+#include "Services/AStar.hpp"
 
 Game *game = nullptr;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Components.hpp"
 #include <string>
 #include <sstream>
+#include "Components.hpp"
 
 class ScoreComponent : public Component
 {

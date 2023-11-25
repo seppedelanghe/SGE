@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Game.hpp"
-#include "../ECS.hpp"
+#include "Game.hpp"
+#include "ECS/ECS.hpp"
 
 #include "Components.hpp"
-#include "Vector2.hpp"
+#include "IS/Physics/Vector2.hpp"
 #include <cstdio>
 
 class KeyboardController : public Component

@@ -3,13 +3,13 @@
 #include <string.h>
 #include <string>
 
-#include "Map.hpp"
-#include "../../Game.hpp"
-#include "../C/Components.hpp"
+#include "MapBuilder.hpp"
+#include "../Game.hpp"
+#include "../ECS/C/Components.hpp"
 
 extern Manager manager;
 
-Map::Map(std::string texture_id, float scale, int tile_size)
+MapBuilder::MapBuilder(std::string texture_id, float scale, int tile_size)
 {
     textureId = texture_id;
     scaleFactor = scale;
@@ -19,7 +19,7 @@ Map::Map(std::string texture_id, float scale, int tile_size)
     scaledSize = scale * tile_size;
 }
 
-Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_map)
+MapBuilder::MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map)
 {
     textureId = texture_id;
     scaleFactor = scale;
@@ -29,7 +29,7 @@ Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_
     scaledSize = (int)(scale * (float)tile_size);
 }
 
-Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group)
+MapBuilder::MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group)
 {
     textureId = texture_id;
     scaleFactor = scale;
@@ -42,11 +42,11 @@ Map::Map(std::string texture_id, float scale, int tile_size, bool has_collision_
 
 
 
-Map::~Map()
+MapBuilder::~MapBuilder()
 {
 }
 
-void Map::Fill(int texX, int texY, int w, int h, bool outerCollision)
+void MapBuilder::Fill(int texX, int texY, int w, int h, bool outerCollision)
 {
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
@@ -61,7 +61,7 @@ void Map::Fill(int texX, int texY, int w, int h, bool outerCollision)
     }
 }
 
-void Map::LoadMap(std::string path, int w, int h)
+void MapBuilder::LoadMap(std::string path, int w, int h)
 {
     char c[6];
     int texture_x;
@@ -95,14 +95,14 @@ void Map::LoadMap(std::string path, int w, int h)
 }
 
 
-void Map::AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group)
+void MapBuilder::AddTile(int srcX, int srcY, int xpos, int ypos, Game::groupLabels group)
 {
     auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(srcX * tileSize, srcY * tileSize, xpos * scaledSize, ypos * scaledSize, tileSize, scaleFactor, textureId);
     tile.addGroup(group);
 }
 
-void Map::AddCollisionTile(int x, int y) {
+void MapBuilder::AddCollisionTile(int x, int y) {
     auto& tcol(manager.addEntity());
     tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
     tcol.addGroup(Game::groupColliders);

@@ -1,13 +1,13 @@
-
-#include "G/MapGenerator.hpp"
-#include "A/Map.hpp"
-#include "ECS.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
 #include <string>
 #include <tuple>
-#include "../utils/noise.cpp"
+
+#include "ECS.hpp"
+#include "MapGenerator.hpp"
+#include "IS/MapBuilder.hpp"
+#include "Utils/noise.hpp"
 
 std::runtime_error not_enough_tiles("You need at least 2 or more tile options to generate a map");
 
@@ -23,7 +23,7 @@ void MapGenerator::addOption(int textureX, int textureY, int collision)
 }
 
 // Generate pseudo random map using perlin noise
-void MapGenerator::generate(Map* map, int w, int h)
+void MapGenerator::generate(MapBuilder* map, int w, int h)
 {
     if (tileOptions.size() < 1) {
         throw not_enough_tiles;

@@ -3,8 +3,8 @@
 #include <map>
 #include <string>
 #include "TextureManager.hpp"
-#include "../Vector2.hpp"
-#include "../ECS.hpp"
+#include "IS/Physics/Vector2.hpp"
+#include "ECS/ECS.hpp"
 #include "SDL_ttf.h"
 
 class AssetManager

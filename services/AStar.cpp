@@ -1,5 +1,5 @@
 
-#include "Vector2.hpp"
+#include "IS/Physics/Vector2.hpp"
 #include "AStar.hpp"
 #include <algorithm>
 #include <cstdio>
@@ -34,7 +34,6 @@ void AStar::AddWall(Vector2 wall)
     auto it = std::find(walls.begin(), walls.end(), wall);
     if (it == walls.end()) {
         walls.push_back(wall);
-        std::cout << "Wall: " << wall << std::endl;
     }
 };
 

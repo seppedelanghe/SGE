@@ -3,13 +3,13 @@
 #include <string>
 #include "../Game.hpp"
 
-class Map
+class MapBuilder
 {
     public:
-        Map(std::string texture_id, float scale, int tile_size);
-        Map(std::string texture_id, float scale, int tile_size, bool has_collision_map);
-        Map(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group);
-        ~Map();
+        MapBuilder(std::string texture_id, float scale, int tile_size);
+        MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map);
+        MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map, Game::groupLabels group);
+        ~MapBuilder();
 
         void LoadMap(std::string path, int w, int h);
         void Fill(int texX, int texY, int w, int h, bool outerCollision);

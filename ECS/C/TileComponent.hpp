@@ -5,7 +5,7 @@
 
 #include "Components.hpp"
 
-#include "../A/AssetManager.hpp"
+#include "ECS/A/AssetManager.hpp"
 
 class TileComponent : public Component
 {
