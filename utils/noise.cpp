@@ -56,7 +56,7 @@ float perlin(float x, float y)
     float ix1 = interpolate(n0, n1, sx);
 
     // interpolate between two previously interpolated values
-    float value = interpolate(ix0, ix1, y);
+    float value = interpolate(ix0, ix1, sy);
 
     return value;
 
