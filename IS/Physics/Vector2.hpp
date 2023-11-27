@@ -18,6 +18,7 @@ class Vector2
         float angle(bool degrees);
         float length();
         bool isZero();
+        bool isNormalized();
 
         Vector2& Add(const Vector2& vec);
         Vector2& Sub(const Vector2& vec);

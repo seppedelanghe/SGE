@@ -1,5 +1,5 @@
 #include "Game.hpp"
-#include "Services/AStar.hpp"
+#include "Utils/noise.hpp"
 
 Game *game = nullptr;
 

@@ -59,6 +59,5 @@ float perlin(float x, float y)
     float value = interpolate(ix0, ix1, sy);
 
     return value;
-
 }
 

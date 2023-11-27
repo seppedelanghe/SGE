@@ -31,53 +31,29 @@ void MapGenerator::generate(MapBuilder* map, int w, int h)
 
     srand(time(NULL));
     
-    int gridSize = w * h;
-    float max = 0.0f;
-    float* values = new float[gridSize]();
+    const int gridSize = w * h;
     
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-        {
-            float val = 0;
-            float freq = 1;
-            float amp = 1;
-            int n_samples = 8;
+    float freq = 0.5f;
+    
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            float x = j * freq;
+            float y = i * freq;
 
-            for (int i = 0; i < n_samples; i++) {
-                val += perlin(x * freq / gridSize, y * freq / gridSize) * amp;
+            float noise = perlin(x, y);
+            noise = (noise + 1) * 0.5f;
 
-                freq *= 2;
-                amp /= 2;
-            }
-            
-            // contrast
-            val *= 1.2;
+            printf("noise: %.7f\n", noise);
 
-            if (val > max) {
-                max = val;
-            }
-            
-            values[x*y] = val;
-        }
-    }
+            int tileIdx = (int)(noise * (tileOptions.size() - 1));
+            printf("tile %d\n", tileIdx);
 
-
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
-            float val = values[x*y];
-            // between 0 - 1
-            val = val / max;
-
-            int tileIdx = (int)(val * (tileOptions.size() - 1));
             const auto[srcX, srcY, collision] = tileOptions[tileIdx];
             map->AddTile(srcX, srcY, x, y, Game::groupMap);
 
             if (collision > 0) {
                 map->AddCollisionTile(x, y);
             }
-            
         }
-        
     }
 }

@@ -35,6 +35,11 @@ bool Vector2::isZero()
     return this->x == 0.0f && this->y == 0.0f;
 }
 
+bool Vector2::isNormalized()
+{
+    return abs(length() - 1.0f) <= 0.0001f; // compares with some epsilon value
+}
+
 
 Vector2& Vector2::Add(const Vector2& vec)
 {
