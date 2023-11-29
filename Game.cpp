@@ -80,35 +80,25 @@ void Game::setup()
 {
     assets->AddFont("arial", "assets/arial.ttf", 16);
 
-    assets->AddTexture("map", "assets/custom/map.png");
+    assets->AddTexture("map", "assets/custom/world.png");
     assets->AddTexture("ground", "assets/custom/ground.png");
     assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
     assets->AddTexture("items", "assets/custom/items.png");
 
-    map = new MapBuilder("map", 2.0f, 16, true);
-    map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
+    map = new MapBuilder("map", 1.0f, 16, true);
+    // map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
     // map->LoadMap(MAPFILE, 30, 20);
 
-    ground = new MapBuilder("ground", 2.0f, 16, true);
+    // ground = new MapBuilder("ground", 2.0f, 16, true);
 
     try
     {
         MapGenerator mapGenerator = MapGenerator();
-        mapGenerator.addOption(0,0,0);
-        mapGenerator.addOption(0,0,0);
-        mapGenerator.addOption(0,0,0);
+        for (int i = 0; i < 13; i++) {
+            mapGenerator.addOption(i, 0, 0);
+        }
 
-        mapGenerator.addOption(2, 0, 1);
-        mapGenerator.addOption(3, 0, 1);
-        mapGenerator.addOption(6, 0, 1);
-        mapGenerator.addOption(7, 0, 1);
-
-        mapGenerator.addOption(2, 1, 1);
-        mapGenerator.addOption(3, 1, 1);
-        mapGenerator.addOption(5, 1, 1);
-        mapGenerator.addOption(6, 1, 1);
-
-        mapGenerator.generate(ground, mapSize[0], mapSize[1]);
+        mapGenerator.generate(map, mapSize[0], mapSize[1]);
         
         astar.UpdateSize(mapSize[0] * 16, mapSize[1] * 16);
 

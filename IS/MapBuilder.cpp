@@ -16,7 +16,7 @@ MapBuilder::MapBuilder(std::string texture_id, float scale, int tile_size)
     tileSize = tile_size;
     hasCollision = false;
 
-    scaledSize = scale * tile_size;
+    scaledSize = (int)(scale * (float)tile_size);
 }
 
 MapBuilder::MapBuilder(std::string texture_id, float scale, int tile_size, bool has_collision_map)

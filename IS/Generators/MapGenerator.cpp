@@ -33,7 +33,7 @@ void MapGenerator::generate(MapBuilder* map, int w, int h)
     
     const int gridSize = w * h;
     
-    float freq = 0.5f;
+    float freq = 0.8f;
     
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
