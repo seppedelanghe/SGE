@@ -19,7 +19,7 @@ const int PerlinNoise::permutations[256] = {
             138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
         };
 
-double PerlinNoise::noise(const double x, const double y, const double z) 
+double PerlinNoise::Noise3D(const double x, const double y, const double z) 
 {
     // Find unit cube that contains point
     int X = (int)floor(x) & 255;
@@ -37,15 +37,15 @@ double PerlinNoise::noise(const double x, const double y, const double z)
     double w = fade(rz);
 
     // Hash coordinates of 8 cube corners
-    int A = p[X] + Y;
-    int AA = p[A] + Z;
+    int A =  p[X  ] + Y;
+    int AA = p[A  ] + Z;
     int AB = p[A+1] + Z;
-    int B = p[X+1] + Y;
-    int BA = p[B] + Z;
+    int B =  p[X+1] + Y;
+    int BA = p[B  ] + Z;
     int BB = p[B+1] + Z;
 
     // add blended results from 8 corners of cube
-    return lerp(w, lerp(v, lerp(u, grad(p[AA  ], x  , y  , z   ),
+    return lerp(w, lerp(v,   lerp(u, grad(p[AA  ], x  , y  , z   ),
                                      grad(p[BA  ], x-1, y  , z   )),
                              lerp(u, grad(p[AB  ], x  , y-1, z   ),
                                      grad(p[BB  ], x-1, y-1, z   ))),
@@ -55,4 +55,32 @@ double PerlinNoise::noise(const double x, const double y, const double z)
                                      grad(p[BB+1], x-1, y-1, z-1 ))));
 
 };
+
+double PerlinNoise::Noise2D(const double x, const double y)  {
+    // Find unit grid cell containing point
+    int X = (int)floor(x) & 255;
+    int Y = (int)floor(y) & 255;
+
+    // Get relative xy coordinates of point within that cell
+    double rx = x - floor(x);
+    double ry = y - floor(y);
+
+    // Compute fade curves for rx, ry
+    double u = fade(rx);
+    double v = fade(ry);
+
+    // Hash coordinates of the 4 square corners
+    int A = p[X] + Y;
+    int AA = p[A];
+    int AB = p[A + 1];
+    int B = p[X + 1] + Y;
+    int BA = p[B];
+    int BB = p[B + 1];
+
+    // Add blended results from 4 corners of the square
+    return lerp(v, lerp(u, grad(p[AA], rx, ry),
+                           grad(p[BA], rx - 1, ry)),
+                   lerp(u, grad(p[AB], rx, ry - 1),
+                           grad(p[BB], rx - 1, ry - 1)));
+}
 
