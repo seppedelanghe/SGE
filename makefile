@@ -6,7 +6,7 @@ SDL2_IMG_PATH = /opt/homebrew/Cellar/sdl2_image/2.6.3_2/
 SDL2_TTF_PATH = /opt/homebrew/Cellar/sdl2_ttf/2.20.2/
 
 SDL2_INCLUDE_DIRS = -I$(SDL2_PATH)include/SDL2 -I$(SDL2_IMG_PATH)include/SDL2 -I$(SDL2_TTF_PATH)include/SDL2
-INCLUDE_DIRS = -I. -I./ECS -I./IS -I./Services -I./Utils
+INCLUDE_DIRS = -I. -I./ECS -I./IS -I./Services -I./Utils -I./IS/Generators -I./IS/Noise -I./IS/Physics
 SDL2_LINK_DIRS = -L$(SDL2_PATH)lib -L$(SDL2_IMG_PATH)lib -L$(SDL2_TTF_PATH)lib
 LINK_DIRS = 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf

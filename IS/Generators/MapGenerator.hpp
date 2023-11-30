@@ -8,10 +8,12 @@
 #include <vector>
 
 #include "IS/MapBuilder.hpp"
+#include "IS/Noise/PerlinNoise.hpp"
 
 class MapGenerator {
     private:
         std::vector<std::tuple<int, int, int>> tileOptions;
+        PerlinNoise perlinNoise = PerlinNoise();
 
     public:
         MapGenerator();
