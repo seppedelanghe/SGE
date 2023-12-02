@@ -86,20 +86,13 @@ void Game::setup()
     assets->AddTexture("items", "assets/custom/items.png");
 
     map = new MapBuilder("map", 1.0f, 16, true);
-    // map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
+    map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
     // map->LoadMap(MAPFILE, 30, 20);
 
     // ground = new MapBuilder("ground", 2.0f, 16, true);
 
     try
     {
-        MapGenerator mapGenerator = MapGenerator();
-        for (int i = 0; i < 13; i++) {
-            mapGenerator.addOption(i, 0, 0);
-        }
-
-        mapGenerator.generate(map, mapSize[0], mapSize[1]);
-        
         astar.UpdateSize(mapSize[0] * 16, mapSize[1] * 16);
 
         player.addComponent<TransformComponent>(16 * 10, 16 * 10, 16, 16, 1);
@@ -126,7 +119,8 @@ void Game::setup()
         player.addComponent<PathFindingComponent>(&astar);
         player.getComponent<PathFindingComponent>().SetNormilizer(16);
 
-        player.addComponent<MouseController>(&camera);
+        // player.addComponent<MouseController>(&camera);
+        player.addComponent<SelectionComponent>(&camera);
         player.addComponent<ColliderComponent>("player");
         
         player.addComponent<ScoreComponent>("Coin");

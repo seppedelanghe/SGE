@@ -47,19 +47,16 @@ class MouseController : public Component
         PathFindingComponent *pathFinding;
 
         MouseController() = default;
-        MouseController(SDL_Rect *gameCamera)
-        {
+        MouseController(SDL_Rect *gameCamera) {
             camera = gameCamera;
         }
 
-        void init() override 
-        {
+        void init() override {
             transform = &entity->getComponent<TransformComponent>();
             pathFinding = &entity->getComponent<PathFindingComponent>();
         }
 
-        void update() override
-        {
+        void update() override {
             if (Game::event.type == SDL_MOUSEBUTTONDOWN) {
                 setTarget();
             }

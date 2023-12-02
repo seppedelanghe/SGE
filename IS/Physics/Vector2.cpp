@@ -88,6 +88,9 @@ Vector2& Vector2::operator/=(const Vector2& vec) { return this->Div(vec); }
 bool Vector2::operator==(const Vector2& vec) { 
     return this->x == vec.x && this->y == vec.y; 
 }
+bool Vector2::operator==(const Vector2& vec) const { 
+    return this->x == vec.x && this->y == vec.y; 
+}
 bool Vector2::operator!=(const Vector2& vec) { 
     return this->x != vec.x || this->y != vec.y; 
 }

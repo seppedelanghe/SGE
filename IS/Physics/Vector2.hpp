@@ -36,6 +36,7 @@ class Vector2
         Vector2& operator/=(const Vector2& vec);
 
         bool operator==(const Vector2& vec);
+        bool operator==(const Vector2& vec) const;
         bool operator!=(const Vector2& vec);
 
         Vector2& operator*(const int& i);

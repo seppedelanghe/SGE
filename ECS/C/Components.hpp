@@ -12,3 +12,4 @@
 #include "ScoreComponent.hpp"
 #include "HealthComponent.hpp"
 #include "PickupComponent.hpp"
+#include "SelectionComponent.hpp"
