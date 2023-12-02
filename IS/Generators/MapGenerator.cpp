@@ -33,20 +33,16 @@ void MapGenerator::generate(MapBuilder* map, int w, int h)
     
     const int gridSize = w * h;
     
-    float freq = 0.8f;
+    float freq = 0.99f;
     
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             float x = j * freq;
             float y = i * freq;
 
-            float noise = perlinNoise.Noise2D(x, y);
-            if (noise < -1 || noise > 1) {
-                printf("Bad noise value: %.7f, x: %.3f, y: %.3f\n", noise, x, y);
-            }
-            // printf("noise: %.7f\n", noise);
+            float noise = perlinNoise.Noise2D(x, y);    
             noise = (noise + 1) * 0.5f;
-            // printf("noise: %.7f\n", noise);
+            printf("noise: %.7f, x: %.3f, y: %.3f\n", noise, x, y);
 
             int tileIdx = (int)(noise * (tileOptions.size() - 1));
             printf("tile %d\n", tileIdx);
