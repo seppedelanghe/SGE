@@ -34,6 +34,7 @@ bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
 auto& coin(manager.addEntity());
+auto& tree(manager.addEntity());
 
 Game::Game()
 {}
@@ -90,6 +91,7 @@ void Game::setup()
     // map->LoadMap(MAPFILE, 30, 20);
 
     // ground = new MapBuilder("ground", 2.0f, 16, true);
+    // ground->LoadMap(GROUNDFILE, 30, 20);
 
     try
     {
@@ -147,6 +149,15 @@ void Game::setup()
         coin.addComponent<ColliderComponent>("coins");
         coin.addComponent<PickupComponent>("coins", 10);
         coin.addGroup(groupCollectables);
+
+
+
+        tree.addComponent<TransformComponent>(120, 120, 16, 16, 2.0f);
+        tree.addComponent<SpriteComponent>("ground");
+        tree.getComponent<SpriteComponent>().setTexIndex(2, 0);
+        tree.addComponent<ColliderComponent>("trees");
+
+        tree.addGroup(groupCollectables);
 
     }
     catch(const char* msg)

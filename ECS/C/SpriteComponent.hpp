@@ -74,13 +74,11 @@ class SpriteComponent : public Component
         SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
         SpriteComponent() = default;
-        SpriteComponent(std::string tId)
-        {
+        SpriteComponent(std::string tId) {
             setTex(tId);
         }
 
-        SpriteComponent(std::string tId, int nFrames, int mSpeed, int imgIndex = 0)
-        {
+        SpriteComponent(std::string tId, int nFrames, int mSpeed, int imgIndex) {
             animated = true;
             addAnimation("Idle", imgIndex, nFrames, mSpeed);
 
@@ -88,41 +86,39 @@ class SpriteComponent : public Component
             setTex(tId);
         }
 
-        ~SpriteComponent()
-        {
-        }
+        ~SpriteComponent() {}
 
-        void addAnimation(std::string name, int index, int nFrames, int speed)
-        {
+        void addAnimation(std::string name, int index, int nFrames, int speed) {
             Animation a = Animation(index, nFrames, speed);
             animations.emplace(name, a);
         }
 
-        void setTex(std::string tId)
-        {
+        void setTex(std::string tId) {
             texture = Game::assets->GetTexture(tId);
         }
 
-        void init() override
-        {
-            transform = &entity->getComponent<TransformComponent>();
+        void setTexIndex(int x, int y) {
+            srcRect.x = x * srcRect.w;
+            srcRect.y = y * srcRect.h;
+        }
 
+        void init() override {
+            transform = &entity->getComponent<TransformComponent>();
+            
             srcRect.x = srcRect.y = 0;
             srcRect.w = transform->width;
             srcRect.h = transform->height;
         }
 
-        void update() override
-        {
+        void update() override {
             Animation *anim = &animations[activeAnimation];
 
             if (animated)
             {
                 updateAnimation();
                 srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / anim->speed) % anim->frames);
+                srcRect.y = anim->index * transform->height;
             }
-
-            srcRect.y = anim->index * transform->height;
 
             destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
             destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
@@ -131,23 +127,19 @@ class SpriteComponent : public Component
             destRect.h = static_cast<int>(transform->height * transform->scale);
         }
 
-        void draw() override
-        {
+        void draw() override {
             TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
         }
 
-        void SetAction(std::string name) 
-        {
+        void SetAction(std::string name) {
             action = name;
         }
 
-        void UnsetAction() 
-        {
+        void UnsetAction() {
             action = "";
         }
 
-        void Play(std::string name)
-        {
+        void Play(std::string name) {
             activeAnimation = name;
         }
 };
