@@ -85,7 +85,7 @@ void Game::setup()
     assets->AddTexture("player", "assets/MiniWorldSprites/Characters/Champions/Arthax.png");
     assets->AddTexture("items", "assets/custom/items.png");
 
-    map = new MapBuilder("map", 1.0f, 16, true);
+    map = new MapBuilder("map", 2.0f, 16, true);
     map->Fill(2, 0, mapSize[0] * 2, mapSize[1] * 2, true);
     // map->LoadMap(MAPFILE, 30, 20);
 

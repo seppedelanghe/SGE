@@ -36,6 +36,16 @@ class MouseSelectionComponent : public Component
 
             return adjust;
         }
+
+        void FlipSelection() {
+            if (selected == selectionStates::unselected) {
+                selected = selectionStates::clicked;
+                printf("clicked\n");
+            } else if (selected == selectionStates::active) {
+                selected = selectionStates::unselected;
+                printf("unselected\n");
+            }
+        }
         
         void CheckSelect(Vector2 clicked) {
             clicked = clicked.Round();
@@ -49,11 +59,7 @@ class MouseSelectionComponent : public Component
             diff = diff.Round();
 
             if (diff.isZero()) {
-                selected = selectionStates::clicked;
-                printf("clicked\n");
-            } else {
-                selected = selectionStates::unselected;
-                printf("unselected\n");
+                FlipSelection();
             }
         }
 
@@ -75,6 +81,7 @@ class MouseSelectionComponent : public Component
         }
 
         void update() override {
+            // delay => activate after other components updated
             if (selected == selectionStates::clicked) {
                 selected = selectionStates::active;
                 printf("active\n");

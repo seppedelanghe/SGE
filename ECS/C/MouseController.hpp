@@ -75,17 +75,5 @@ class MouseController : public Component
             if (Game::event.type == SDL_MOUSEBUTTONDOWN) {
                 setTarget();
             }
-
-            // Vector2 diff = target.Copy();
-            // diff -= transform->position;
-            // diff = diff.Round();
-            //
-            // if (diff.isZero()) {
-            //     unset = true;
-            //     transform->velocity.Zero();
-            //     return;
-            // }
-            //
-            // transform->velocity = diff.Normalize();
         };
 };
