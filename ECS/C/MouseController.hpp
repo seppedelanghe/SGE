@@ -15,6 +15,7 @@ class MouseController : public Component
     private:
         Vector2 target;
         SDL_Rect *camera;
+        bool requiresSelection = false;
 
         Vector2 cameraAdjust() {
             Vector2 adjust;
@@ -40,15 +41,21 @@ class MouseController : public Component
             
             std::cout << "Player target: " << target << std::endl;
             std::cout << "Player position: " << transform->position << std::endl;
-        }
+        } 
 
     public:
         TransformComponent *transform;
         PathFindingComponent *pathFinding;
+        MouseSelectionComponent *selection = nullptr;
 
         MouseController() = default;
         MouseController(SDL_Rect *gameCamera) {
             camera = gameCamera;
+        }
+
+        MouseController(SDL_Rect *gameCamera, bool selection) {
+            camera = gameCamera;
+            requiresSelection = selection;
         }
 
         void init() override {
@@ -57,6 +64,14 @@ class MouseController : public Component
         }
 
         void update() override {
+            if (requiresSelection && selection == nullptr) {
+                selection = &entity->getComponent<MouseSelectionComponent>();
+            }
+
+            if (requiresSelection && !selection->IsSelected()) {
+                return;
+            }
+
             if (Game::event.type == SDL_MOUSEBUTTONDOWN) {
                 setTarget();
             }

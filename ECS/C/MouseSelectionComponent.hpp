@@ -4,6 +4,7 @@
 #include "SDL_mouse.h"
 
 #include "Vector2.hpp"
+#include <cstddef>
 #include <cstdio>
 #include <iostream>
 #include <ostream>
@@ -11,10 +12,17 @@
 #include "C/TransformComponent.hpp"
 
 
-class SelectionComponent : public Component
+class MouseSelectionComponent : public Component
 {
     private:
-        bool selected = false;
+        enum selectionStates : std::size_t {
+            unselected,
+            clicked,
+            active
+        };
+
+        selectionStates selected = selectionStates::unselected;
+
         SDL_Rect* camera;
         Vector2 centerAlign = Vector2(8, 8);
         Vector2 forgiveness = Vector2(16, 16);
@@ -40,20 +48,23 @@ class SelectionComponent : public Component
             diff /= forgiveness;
             diff = diff.Round();
 
-            selected = diff.isZero();
-            printf("Selected: %x\n", selected);
+            if (diff.isZero()) {
+                selected = selectionStates::clicked;
+                printf("clicked\n");
+            } else {
+                selected = selectionStates::unselected;
+                printf("unselected\n");
+            }
         }
 
     public:
         TransformComponent *transform;
 
-        SelectionComponent() = default;
-        
-        SelectionComponent(SDL_Rect *gameCamera) {
+        MouseSelectionComponent() = default;
+        MouseSelectionComponent(SDL_Rect *gameCamera) {
             camera = gameCamera;
         }
-
-        SelectionComponent(SDL_Rect *gameCamera, float centerAdjust) {
+        MouseSelectionComponent(SDL_Rect *gameCamera, float centerAdjust) {
             camera = gameCamera;
             centerAlign = Vector2(centerAdjust, centerAdjust);
             forgiveness = Vector2(centerAdjust * 2, centerAdjust * 2);
@@ -64,6 +75,12 @@ class SelectionComponent : public Component
         }
 
         void update() override {
+            if (selected == selectionStates::clicked) {
+                selected = selectionStates::active;
+                printf("active\n");
+                return;
+            }
+
             if (Game::event.type == SDL_MOUSEBUTTONDOWN) {
                 int mouseX, mouseY;
                 SDL_GetMouseState(&mouseX,&mouseY);
@@ -73,5 +90,9 @@ class SelectionComponent : public Component
                 };
                 CheckSelect(clicked);
             }
+        }
+
+        bool IsSelected() {
+            return selected == selectionStates::active;
         }
 };

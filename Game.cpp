@@ -119,8 +119,8 @@ void Game::setup()
         player.addComponent<PathFindingComponent>(&astar);
         player.getComponent<PathFindingComponent>().SetNormilizer(16);
 
-        // player.addComponent<MouseController>(&camera);
-        player.addComponent<SelectionComponent>(&camera);
+        player.addComponent<MouseController>(&camera, true);
+        player.addComponent<MouseSelectionComponent>(&camera);
         player.addComponent<ColliderComponent>("player");
         
         player.addComponent<ScoreComponent>("Coin");
