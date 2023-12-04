@@ -151,13 +151,12 @@ void Game::setup()
         coin.addGroup(groupCollectables);
 
 
-
         tree.addComponent<TransformComponent>(120, 120, 16, 16, 2.0f);
         tree.addComponent<SpriteComponent>("ground");
         tree.getComponent<SpriteComponent>().setTexIndex(2, 0);
         tree.addComponent<ColliderComponent>("trees");
 
-        tree.addGroup(groupCollectables);
+        tree.addGroup(groupColliders);
 
     }
     catch(const char* msg)
@@ -195,7 +194,6 @@ void Game::update()
 {
 
     SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
-
     Vector2 pPos = player.getComponent<TransformComponent>().position;
 
     manager.refresh();
@@ -206,8 +204,7 @@ void Game::update()
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
         astar.AddWall(Vector2(cCol.x / 16, cCol.y / 16));
 
-        if (Collision::AABB(cCol, playerCol))
-        {
+        if (Collision::AABB(cCol, playerCol)) {
             Vector2 colDir = *Collision::AABBDirection(cCol, playerCol);
             player.getComponent<TransformComponent>().position = pPos - colDir;
         }

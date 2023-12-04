@@ -113,8 +113,7 @@ class SpriteComponent : public Component
         void update() override {
             Animation *anim = &animations[activeAnimation];
 
-            if (animated)
-            {
+            if (animated) {
                 updateAnimation();
                 srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / anim->speed) % anim->frames);
                 srcRect.y = anim->index * transform->height;
