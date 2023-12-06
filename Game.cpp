@@ -155,6 +155,8 @@ void Game::setup()
         tree.addComponent<SpriteComponent>("ground");
         tree.getComponent<SpriteComponent>().setTexIndex(2, 0);
         tree.addComponent<ColliderComponent>("trees");
+        tree.addComponent<MouseSelectionComponent>();
+        
 
         tree.addGroup(groupColliders);
 
