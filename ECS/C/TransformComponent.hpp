@@ -3,8 +3,7 @@
 #include "Components.hpp"
 #include "IS/Physics/Vector2.hpp"
 
-class TransformComponent : public Component
-{
+class TransformComponent : public Component {
     private:
         int xpos;
         int ypos;
@@ -20,25 +19,21 @@ class TransformComponent : public Component
 
         int speed = 1;
 
-        TransformComponent()
-        {
+        TransformComponent() {
             position.Zero();
         }
 
-        TransformComponent(int scl)
-        {
+        TransformComponent(int scl) {
             position.Zero();
             scale = scl;
         }
 
-        TransformComponent(float x, float y) 
-        {
+        TransformComponent(float x, float y) {
             position.x = x;
             position.y = y;
         }
 
-        TransformComponent(float x, float y, int w, int h, float scl = 2.0f)
-        {
+        TransformComponent(float x, float y, int w, int h, float scl = 2.0f) {
             position.x = x;
             position.y = y;
             height = h;
@@ -46,13 +41,11 @@ class TransformComponent : public Component
             scale = scl;
         }
 
-        void init() override
-        {
+        void init() override {
             velocity.Zero();
         }
 
-        void update() override
-        {
+        void update() override {
             // Move player
             position.x += velocity.x * speed;
             position.y += velocity.y * speed;

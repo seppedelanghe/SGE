@@ -132,7 +132,9 @@ class Manager {
             for (Group g = Game::groupMap; g != Game::groupUI; g++ )
             {
                 auto& entities = this->getGroup(g);
-                for (auto& e : entities) e->draw();
+                for (auto& e : entities) { 
+                    e->draw();
+                }
             }
 
             auto& entities = this->getGroup(Game::groupUI);

@@ -128,6 +128,10 @@ class SpriteComponent : public Component
 
         void draw() override {
             TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
+            if (Game::isDebug) {
+                SDL_SetRenderDrawColor(Game::renderer, 0, 0, 255, 255 );
+                SDL_RenderDrawRect(Game::renderer, &destRect);
+            }
         }
 
         void SetAction(std::string name) {

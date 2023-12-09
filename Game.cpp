@@ -32,6 +32,7 @@ SDL_Rect Game::camera = { 0, 0, 960, 640 };
 AssetManager* Game::assets = new AssetManager(&manager);
 
 bool Game::isRunning = false;
+bool Game::isDebug = true;
 
 auto& player(manager.addEntity());
 auto& coin(manager.addEntity());
