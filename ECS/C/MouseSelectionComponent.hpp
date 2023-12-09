@@ -116,6 +116,18 @@ class MouseSelectionComponent : public Component
             }
         }
 
+        void draw() override {
+            if (Game::isDebug) {
+                SDL_SetRenderDrawColor(Game::renderer, 0, 255, 0, 255 );
+                SDL_Rect destRect;
+                destRect.x = (int)(transform->position.x + centerAlign.x);
+                destRect.y = (int)(transform->position.y + centerAlign.y);
+                destRect.w = (int)(forgiveness.x);
+                destRect.y = (int)(forgiveness.y);
+                SDL_RenderDrawRect(Game::renderer, &destRect);
+            }
+        }
+
         bool IsSelected() {
             return selected == selectionStates::active;
         }
