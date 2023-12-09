@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <ostream>
 #include <sstream>
 
 #include "Game.hpp"
@@ -68,8 +69,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         isRunning = false;
     }
 
-    if (TTF_Init() == -1)
-    {
+    if (TTF_Init() == -1) {
         std::cout << "Error : Failed to init TTF" << std::endl;
     }
 
@@ -155,7 +155,11 @@ void Game::setup()
         tree.addComponent<SpriteComponent>("ground");
         tree.getComponent<SpriteComponent>().setTexIndex(2, 0);
         tree.addComponent<ColliderComponent>("trees");
-        tree.addComponent<MouseSelectionComponent>();
+
+        tree.addComponent<MouseSelectionComponent>(&camera, 16, [](Entity& self) {
+            Entity* e = &self;
+            self.getComponent<TransformComponent>().position.x -= 16;
+        });
         
 
         tree.addGroup(groupColliders);

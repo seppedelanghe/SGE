@@ -6,6 +6,7 @@
 #include "Vector2.hpp"
 #include <cstddef>
 #include <cstdio>
+#include <functional>
 #include <iostream>
 #include <ostream>
 
@@ -26,6 +27,7 @@ class MouseSelectionComponent : public Component
         SDL_Rect* camera;
         Vector2 centerAlign = Vector2(8, 8);
         Vector2 forgiveness = Vector2(16, 16);
+        std::function<void(Entity&)> selectCallback = nullptr;
 
         Vector2 cameraAdjust() {
             Vector2 adjust;
@@ -74,7 +76,17 @@ class MouseSelectionComponent : public Component
             camera = gameCamera;
             centerAlign = Vector2(centerAdjust, centerAdjust);
             forgiveness = Vector2(centerAdjust * 2, centerAdjust * 2);
-        } 
+        }
+        MouseSelectionComponent(SDL_Rect *gameCamera, std::function<void(Entity&)> callback) {
+            camera = gameCamera;
+            selectCallback = callback;
+        }
+        MouseSelectionComponent(SDL_Rect *gameCamera, float centerAdjust, std::function<void(Entity&)> callback) {
+            camera = gameCamera;
+            centerAlign = Vector2(centerAdjust, centerAdjust);
+            forgiveness = Vector2(centerAdjust, centerAdjust);
+            selectCallback = callback;
+        }
 
         void init() override {
             transform = &entity->getComponent<TransformComponent>();
@@ -96,6 +108,11 @@ class MouseSelectionComponent : public Component
                     (float)mouseX, (float)mouseY
                 };
                 CheckSelect(clicked);
+            }
+
+            if (IsSelected() && selectCallback != nullptr) {
+                selectCallback(*this->entity);
+                FlipSelection();
             }
         }
 
