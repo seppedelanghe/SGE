@@ -1,7 +1,11 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <iostream>
+#include <ostream>
 #include <vector>
+
+#include "SDL_render.h"
 
 #include "ECS/C/TransformComponent.hpp"
 #include "ECS.hpp"
@@ -41,15 +45,13 @@ class PathFindingComponent : public Component
             transform->velocity = delta.Normalize();
         };
 
-        void UpdateOrigin()
-        {
+        void UpdateOrigin() {
             origin = transform->position.Clone();
             origin = origin / normalizer;
             origin = origin.Round();
         }
 
-        void UpdatePath()
-        {
+        void UpdatePath() {
             UpdateOrigin();
 
             path = finder->search(origin, target);
@@ -68,13 +70,11 @@ class PathFindingComponent : public Component
             active = false;
         }
 
-        void init() override
-        {
+        void init() override {
             transform = &entity->getComponent<TransformComponent>();
         };
         
-        void update() override
-        {
+        void update() override {
             if (!active) {
                 return;
             }
@@ -91,19 +91,36 @@ class PathFindingComponent : public Component
 
         };
 
-        void SetNormilizer(int divider)
-        {
+        void draw() override {
+            if (Game::isDebug && active) {
+                Vector2 absTarget = target.Clone();
+                absTarget *= normalizer;
+                std::cout << "abs t " << absTarget << std::endl;
+
+                SDL_Rect rect;
+                rect.x = absTarget.x - static_cast<int>(transform->width / 2);
+                rect.y = absTarget.y - static_cast<int>(transform->height / 2);
+                rect.w = transform->width;
+                rect.h = transform->height;
+                
+                SDL_SetRenderDrawColor(Game::renderer, 255, 0, 255, 255);
+                SDL_RenderDrawRect(Game::renderer, &rect);
+            }
+        }
+
+        void SetNormilizer(int divider) {
             normalizer = Vector2(divider, divider);
         }
 
-        void SetNormilizer(int x, int y)
-        {
+        void SetNormilizer(int x, int y) {
             normalizer = Vector2(x, y);
         }
 
-        void SetTarget(Vector2 coord) 
-        {
-            target = coord / normalizer;
+        void SetTarget(Vector2 coord) {
+            target = coord.Clone();
+            target.x += static_cast<int>(transform->width / 2);
+            target.y += static_cast<int>(transform->height / 2);
+            target /= normalizer;
             target = target.Round();
             active = true;
         }

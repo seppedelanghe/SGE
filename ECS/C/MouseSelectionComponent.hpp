@@ -7,7 +7,6 @@
 #include "Vector2.hpp"
 #include <cstddef>
 #include <cstdio>
-#include <ctime>
 #include <functional>
 #include <iostream>
 #include <ostream>
