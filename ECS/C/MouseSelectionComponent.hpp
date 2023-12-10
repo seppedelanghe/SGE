@@ -3,9 +3,11 @@
 #include "SDL_keycode.h"
 #include "SDL_mouse.h"
 
+#include "SDL_render.h"
 #include "Vector2.hpp"
 #include <cstddef>
 #include <cstdio>
+#include <ctime>
 #include <functional>
 #include <iostream>
 #include <ostream>
@@ -84,7 +86,7 @@ class MouseSelectionComponent : public Component
         MouseSelectionComponent(SDL_Rect *gameCamera, float centerAdjust, std::function<void(Entity&)> callback) {
             camera = gameCamera;
             centerAlign = Vector2(centerAdjust, centerAdjust);
-            forgiveness = Vector2(centerAdjust, centerAdjust);
+            forgiveness = Vector2(centerAdjust * 2, centerAdjust * 2);
             selectCallback = callback;
         }
 
@@ -118,12 +120,13 @@ class MouseSelectionComponent : public Component
 
         void draw() override {
             if (Game::isDebug) {
-                SDL_SetRenderDrawColor(Game::renderer, 0, 255, 0, 255 );
                 SDL_Rect destRect;
-                destRect.x = (int)(transform->position.x + centerAlign.x);
-                destRect.y = (int)(transform->position.y + centerAlign.y);
-                destRect.w = (int)(forgiveness.x);
-                destRect.y = (int)(forgiveness.y);
+                destRect.x = transform->position.x;
+                destRect.y = transform->position.y;
+                destRect.w = forgiveness.x;
+                destRect.h = forgiveness.y;
+
+                SDL_SetRenderDrawColor(Game::renderer, 255, 0, 0, 255 );
                 SDL_RenderDrawRect(Game::renderer, &destRect);
             }
         }
