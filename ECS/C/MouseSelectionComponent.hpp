@@ -14,8 +14,7 @@
 #include "C/TransformComponent.hpp"
 
 
-class MouseSelectionComponent : public Component
-{
+class MouseSelectionComponent : public Component {
     private:
         enum selectionStates : std::size_t {
             unselected,

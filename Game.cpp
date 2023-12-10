@@ -157,9 +157,13 @@ void Game::setup()
         tree.getComponent<SpriteComponent>().setTexIndex(2, 0);
         tree.addComponent<ColliderComponent>("trees");
 
+        SDL_Rect menuRect{ 0, 0, 100, 240 };
+        tree.addComponent<MenuComponent>(menuRect);
+        tree.getComponent<MenuComponent>().AddLabel("hello", 16, 16);
+
         tree.addComponent<MouseSelectionComponent>(&camera, 16, [](Entity& self) {
             Entity* e = &self;
-            self.getComponent<TransformComponent>().position.x -= 16;
+            e->getComponent<MenuComponent>().Toggle();
         });
         
 

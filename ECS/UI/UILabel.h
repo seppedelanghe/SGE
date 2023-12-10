@@ -7,48 +7,39 @@
 #include "SDL_ttf.h"
 #include <string>
 
-class UILabel : public Component
-{
+class UILabel : public Component {
     public:
-        UILabel(int x, int y, std::string text, std::string font, SDL_Color &col) : text(text), font(font), color(col)
-        {
+        UILabel(int x, int y, std::string text, std::string font, SDL_Color &col) : text(text), font(font), color(col) {
             pos.x = x;
             pos.y = y;
 
             this->CreateTexture();
         }
 
-        ~UILabel()
-        {}
+        ~UILabel() {}
 
-        void SetFromScore(ScoreComponent &sc)
-        {
+        void SetFromScore(ScoreComponent &sc) {
             Set(sc.AsString());
         }
 
-        void SetFromHealth(HealthComponent &hc)
-        {
+        void SetFromHealth(HealthComponent &hc) {
             Set(hc.AsString());
         }
 
-        void Set(std::string text)
-        {
+        void Set(std::string text) {
             this->text = text;
             this->CreateTexture();
         }
 
-        void AssociateScore(ScoreComponent *sc)
-        {
+        void AssociateScore(ScoreComponent *sc) {
             scoreComp = sc;
         }
 
-        void AssociateHealth(HealthComponent *hc)
-        {
+        void AssociateHealth(HealthComponent *hc) {
             healthComp = hc;
         }
 
-        void CreateTexture()
-        {
+        void CreateTexture() {
             SDL_Surface* surf = TTF_RenderText_Blended(Game::assets->GetFont(font), text.c_str(), color);
             texture = SDL_CreateTextureFromSurface(Game::renderer, surf);
             SDL_FreeSurface(surf);
@@ -56,20 +47,16 @@ class UILabel : public Component
             SDL_QueryTexture(texture, nullptr, nullptr, &pos.w, &pos.h);
         }
 
-        void draw() override
-        {
+        void draw() override {
             SDL_RenderCopy(Game::renderer, texture, nullptr, &pos);
         }
 
-        void update() override
-        {
-            if (scoreComp)
-            {
+        void update() override {
+            if (scoreComp) {
                 this->Set(scoreComp->AsString());
             }
 
-            if (healthComp)
-            {
+            if (healthComp) {
                 this->Set(healthComp->AsString());
             }
         }
